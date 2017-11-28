@@ -1,0 +1,6 @@
+
+LIBRARY = -lcppunit
+INCLUDE = -ISimulationTest.cpp -IOptionsViewTest.cpp
+
+runTest: TestRunner.o SimulationTest.o OptionsViewTest.o
+g++ -g -o runTest TestRunner.o SimulationTest.o  OptionsViewTest.o $(INCLUDE) $(LIBRARY)
