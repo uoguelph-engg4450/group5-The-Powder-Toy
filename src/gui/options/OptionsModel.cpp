@@ -90,18 +90,27 @@ void OptionsModel::SetGravityMode(int gravityMode)
 	notifySettingsChanged();
 }
 
-int OptionsModel::GetScale()
+bool OptionsModel::GetScale()
 {
-	return ui::Engine::Ref().GetScale();
+	return ui::Engine::Ref().GetScale()==2;
 }
-
-void OptionsModel::SetScale(int scale)
+void OptionsModel::SetScale(bool doubleScale)
 {
-	ui::Engine::Ref().SetScale(scale);
-	Client::Ref().SetPref("Scale", int(scale));
+	ui::Engine::Ref().SetScale(doubleScale?2:1);
+	Client::Ref().SetPref("Scale", int(doubleScale?2:1));
 	notifySettingsChanged();
 }
-
+//////////////////////////////////////////////////////////
+bool OptionsModel::GetPressure()
+{
+	return sim->includePressure;
+}
+void OptionsModel::SetPressure(bool pressure)
+{
+	sim->includePressure = pressure;
+	notifySettingsChanged();
+}
+/////////////////////////////////////////////////////////
 bool OptionsModel::GetFullscreen()
 {
 	return ui::Engine::Ref().GetFullscreen();

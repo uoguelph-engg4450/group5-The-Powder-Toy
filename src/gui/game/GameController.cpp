@@ -327,13 +327,13 @@ std::string GameController::GetSignText(int signID)
 	return gameModel->GetSimulation()->signs[signID].text;
 }
 
-void GameController::PlaceSave(ui::Point position, bool includePressure)
+void GameController::PlaceSave(ui::Point position)
 {
 	GameSave *placeSave = gameModel->GetPlaceSave();
 	if (placeSave)
 	{
 		HistorySnapshot();
-		if (!gameModel->GetSimulation()->Load(position.X, position.Y, placeSave, includePressure))
+		if (!gameModel->GetSimulation()->Load(position.X, position.Y, placeSave))
 		{
 			gameModel->SetPaused(placeSave->paused | gameModel->GetPaused());
 			Client::Ref().MergeStampAuthorInfo(placeSave->authors);
@@ -569,10 +569,10 @@ void GameController::ToolClick(int toolSelection, ui::Point point)
 	activeTool->Click(sim, cBrush, point);
 }
 
-std::string GameController::StampRegion(ui::Point point1, ui::Point point2, bool includePressure)
+std::string GameController::StampRegion(ui::Point point1, ui::Point point2)
 {
 	GameSave * newSave;
-	newSave = gameModel->GetSimulation()->Save(point1.X, point1.Y, point2.X, point2.Y, includePressure);
+	newSave = gameModel->GetSimulation()->Save(point1.X, point1.Y, point2.X, point2.Y);
 	if(newSave)
 	{
 		newSave->paused = gameModel->GetPaused();
@@ -588,10 +588,10 @@ std::string GameController::StampRegion(ui::Point point1, ui::Point point2, bool
 	}
 }
 
-void GameController::CopyRegion(ui::Point point1, ui::Point point2, bool includePressure)
+void GameController::CopyRegion(ui::Point point1, ui::Point point2)
 {
 	GameSave * newSave;
-	newSave = gameModel->GetSimulation()->Save(point1.X, point1.Y, point2.X, point2.Y, includePressure);
+	newSave = gameModel->GetSimulation()->Save(point1.X, point1.Y, point2.X, point2.Y);
 	if(newSave)
 	{
 		Json::Value clipboardInfo;
@@ -606,9 +606,9 @@ void GameController::CopyRegion(ui::Point point1, ui::Point point2, bool include
 	}
 }
 
-void GameController::CutRegion(ui::Point point1, ui::Point point2, bool includePressure)
+void GameController::CutRegion(ui::Point point1, ui::Point point2)
 {
-	CopyRegion(point1, point2, includePressure);
+	CopyRegion(point1, point2);
 	gameModel->GetSimulation()->clear_area(point1.X, point1.Y, point2.X-point1.X, point2.Y-point1.Y);
 }
 
@@ -938,8 +938,13 @@ bool GameController::GetAHeatEnable()
 
 void GameController::ToggleNewtonianGravity()
 {
-	gameModel->SetNewtonianGravity(!gameModel->GetNewtonianGrvity());
+	if (gameModel->GetSimulation()->grav->ngrav_enable)
+		gameModel->GetSimulation()->grav->stop_grav_async();
+	else
+		gameModel->GetSimulation()->grav->start_grav_async();
+	gameModel->UpdateQuickOptions();
 }
+
 
 void GameController::LoadRenderPreset(int presetNum)
 {

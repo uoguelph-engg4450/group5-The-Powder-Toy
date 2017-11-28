@@ -16,7 +16,7 @@
 #include "elements/Element.h"
 
 #define CHANNELS ((int)(MAX_TEMP-73)/100+2)
-
+#define TESTING 1
 class Snapshot;
 class SimTool;
 class Brush;
@@ -113,11 +113,12 @@ public:
 	int pretty_powder;
 	int sandcolour;
 	int sandcolour_frame;
+	bool includePressure;
 
-	int Load(GameSave * save, bool includePressure = true);
-	int Load(int x, int y, GameSave * save, bool includePressure = true);
-	GameSave * Save(bool includePressure = true);
-	GameSave * Save(int x1, int y1, int x2, int y2, bool includePressure = true);
+	int Load(GameSave * save);
+	int Load(int x, int y, GameSave * save);
+	GameSave * Save();
+	GameSave * Save(int x1, int y1, int x2, int y2);
 	void SaveSimOptions(GameSave * gameSave);
 	SimulationSample GetSample(int x, int y);
 

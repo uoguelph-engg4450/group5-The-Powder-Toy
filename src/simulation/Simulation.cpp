@@ -1,3 +1,4 @@
+//#include <cstdlib>
 #include <cmath>
 #include <math.h>
 #ifdef _MSC_VER
@@ -5,33 +6,32 @@
 #else
 #include <strings.h>
 #endif
-#include "Air.h"
 #include "Config.h"
-#include "CoordStack.h"
-#include "Elements.h"
-#include "elements/Element.h"
-#include "Gravity.h"
-#include "Sample.h"
 #include "Simulation.h"
-#include "Snapshot.h"
+#include "Elements.h"
+#include "Air.h"
+#include "Gravity.h"
+#include "elements/Element.h"
+#include "CoordStack.h"
 
 #include "Misc.h"
 #include "ToolClasses.h"
-#include "client/GameSave.h"
-#include "common/tpt-minmax.h"
 #include "gui/game/Brush.h"
+#include "client/GameSave.h"
+#include "Sample.h"
+#include "Snapshot.h"
 
 #ifdef LUACONSOLE
 #include "lua/LuaScriptInterface.h"
 #include "lua/LuaScriptHelper.h"
 #endif
 
-int Simulation::Load(GameSave * save, bool includePressure)
+int Simulation::Load(GameSave * save)
 {
-	return Load(0, 0, save, includePressure);
+	return Load(0, 0, save);
 }
 
-int Simulation::Load(int fullX, int fullY, GameSave * save, bool includePressure)
+int Simulation::Load(int fullX, int fullY, GameSave * save)
 {
 	int blockX, blockY, x, y, r;
 
@@ -80,9 +80,7 @@ int Simulation::Load(int fullX, int fullY, GameSave * save, bool includePressure
 	}
 
 	int i;
-	// Map of soap particles loaded into this save, old ID -> new ID
-	std::map<unsigned int, unsigned int> soapList;
-	for (int n = 0; n < NPART && n < save->particlesCount; n++)
+	for(int n = 0; n < NPART && n < save->particlesCount; n++)
 	{
 		Particle tempPart = save->particles[n];
 		tempPart.x += (float)fullX;
@@ -185,44 +183,10 @@ int Simulation::Load(int fullX, int fullY, GameSave * save, bool includePressure
 				}
 			}
 		}
-		else if (parts[i].type == PT_SOAP)
-		{
-			soapList.insert(std::pair<unsigned int, unsigned int>(n, i));
-		}
 	}
 	parts_lastActiveIndex = NPART-1;
 	force_stacking_check = true;
 	Element_PPIP::ppip_changed = 1;
-
-	// fix SOAP links using soapList, a map of old particle ID -> new particle ID
-	// loop through every old particle (loaded from save), and convert .tmp / .tmp2
-	for (std::map<unsigned int, unsigned int>::iterator iter = soapList.begin(), end = soapList.end(); iter != end; ++iter)
-	{
-		int i = (*iter).second;
-		if ((parts[i].ctype & 0x2) == 2)
-		{
-			std::map<unsigned int, unsigned int>::iterator n = soapList.find(parts[i].tmp);
-			if (n != end)
-				parts[i].tmp = n->second;
-			else
-			{
-				parts[i].tmp = 0;
-				parts[i].ctype ^= 2;
-			}
-		}
-		if ((parts[i].ctype & 0x4) == 4)
-		{
-			std::map<unsigned int, unsigned int>::iterator n = soapList.find(parts[i].tmp2);
-			if (n != end)
-				parts[i].tmp2 = n->second;
-			else
-			{
-				parts[i].tmp2 = 0;
-				parts[i].ctype ^= 4;
-			}
-		}
-	}
-
 	for (size_t i = 0; i < save->signs.size() && signs.size() < MAXSIGNS; i++)
 	{
 		if (save->signs[i].text[0])
@@ -243,14 +207,11 @@ int Simulation::Load(int fullX, int fullY, GameSave * save, bool includePressure
 				fvx[saveBlockY+blockY][saveBlockX+blockX] = save->fanVelX[saveBlockY][saveBlockX];
 				fvy[saveBlockY+blockY][saveBlockX+blockX] = save->fanVelY[saveBlockY][saveBlockX];
 			}
-			if (includePressure)
+			if (true)
 			{
-				if (save->hasPressure)
-				{
-					pv[saveBlockY+blockY][saveBlockX+blockX] = save->pressure[saveBlockY][saveBlockX];
-					vx[saveBlockY+blockY][saveBlockX+blockX] = save->velocityX[saveBlockY][saveBlockX];
-					vy[saveBlockY+blockY][saveBlockX+blockX] = save->velocityY[saveBlockY][saveBlockX];
-				}
+				pv[saveBlockY+blockY][saveBlockX+blockX] = save->pressure[saveBlockY][saveBlockX];
+				vx[saveBlockY+blockY][saveBlockX+blockX] = save->velocityX[saveBlockY][saveBlockX];
+				vy[saveBlockY+blockY][saveBlockX+blockX] = save->velocityY[saveBlockY][saveBlockX];
 				if (save->hasAmbientHeat)
 					hv[saveBlockY+blockY][saveBlockX+blockX] = save->ambientHeat[saveBlockY][saveBlockX];
 			}
@@ -259,16 +220,15 @@ int Simulation::Load(int fullX, int fullY, GameSave * save, bool includePressure
 
 	gravWallChanged = true;
 	air->RecalculateBlockAirMaps();
-
 	return 0;
 }
 
-GameSave * Simulation::Save(bool includePressure)
+GameSave * Simulation::Save()
 {
-	return Save(0, 0, XRES-1, YRES-1, includePressure);
+	return Save(0, 0, XRES-1, YRES-1);
 }
 
-GameSave * Simulation::Save(int fullX, int fullY, int fullX2, int fullY2, bool includePressure)
+GameSave * Simulation::Save(int fullX, int fullY, int fullX2, int fullY2)
 {
 	int blockX, blockY, blockX2, blockY2, blockW, blockH;
 	//Normalise incoming coords
@@ -301,22 +261,18 @@ GameSave * Simulation::Save(int fullX, int fullY, int fullX2, int fullY2, bool i
 	int storedParts = 0;
 	int elementCount[PT_NUM];
 	std::fill(elementCount, elementCount+PT_NUM, 0);
-	// Map of soap particles loaded into this save, new ID -> old ID
-	std::map<unsigned int, unsigned int> soapList;
-	for (int i = 0; i < NPART; i++)
+	for(int i = 0; i < NPART; i++)
 	{
 		int x, y;
 		x = int(parts[i].x + 0.5f);
 		y = int(parts[i].y + 0.5f);
-		if (parts[i].type && x >= fullX && y >= fullY && x <= fullX2 && y <= fullY2)
+		if(parts[i].type && x >= fullX && y >= fullY && x <= fullX2 && y <= fullY2)
 		{
 			Particle tempPart = parts[i];
 			tempPart.x -= blockX*CELL;
 			tempPart.y -= blockY*CELL;
-			if (elements[tempPart.type].Enabled)
+			if(elements[tempPart.type].Enabled)
 			{
-				if (tempPart.type == PT_SOAP)
-					soapList.insert(std::pair<unsigned int, unsigned int>(i, storedParts));
 				*newSave << tempPart;
 				storedParts++;
 				elementCount[tempPart.type]++;
@@ -324,41 +280,13 @@ GameSave * Simulation::Save(int fullX, int fullY, int fullX2, int fullY2, bool i
 		}
 	}
 
-	if (storedParts)
+	if(storedParts)
 	{
-		for (int i = 0; i < PT_NUM; i++)
+		for(int i = 0; i < PT_NUM; i++)
 		{
-			if (elements[i].Enabled && elementCount[i])
+			if(elements[i].Enabled && elementCount[i])
 			{
 				newSave->palette.push_back(GameSave::PaletteItem(elements[i].Identifier, i));
-			}
-		}
-		// fix SOAP links using soapList, a map of new particle ID -> old particle ID
-		// loop through every new particle (saved into the save), and convert .tmp / .tmp2
-		for (std::map<unsigned int, unsigned int>::iterator iter = soapList.begin(), end = soapList.end(); iter != end; ++iter)
-		{
-			int i = (*iter).second;
-			if ((newSave->particles[i].ctype & 0x2) == 2)
-			{
-				std::map<unsigned int, unsigned int>::iterator n = soapList.find(newSave->particles[i].tmp);
-				if (n != end)
-					newSave->particles[i].tmp = n->second;
-				else
-				{
-					newSave->particles[i].tmp = 0;
-					newSave->particles[i].ctype ^= 2;
-				}
-			}
-			if ((newSave->particles[i].ctype & 0x4) == 4)
-			{
-				std::map<unsigned int, unsigned int>::iterator n = soapList.find(newSave->particles[i].tmp2);
-				if (n != end)
-					newSave->particles[i].tmp2 = n->second;
-				else
-				{
-					newSave->particles[i].tmp2 = 0;
-					newSave->particles[i].ctype ^= 4;
-				}
 			}
 		}
 	}
@@ -384,14 +312,19 @@ GameSave * Simulation::Save(int fullX, int fullY, int fullX2, int fullY2, bool i
 				newSave->fanVelX[saveBlockY][saveBlockX] = fvx[saveBlockY+blockY][saveBlockX+blockX];
 				newSave->fanVelY[saveBlockY][saveBlockX] = fvy[saveBlockY+blockY][saveBlockX+blockX];
 			}
-			if (includePressure)
+			if (this->includePressure)
 			{
 				newSave->pressure[saveBlockY][saveBlockX] = pv[saveBlockY+blockY][saveBlockX+blockX];
 				newSave->velocityX[saveBlockY][saveBlockX] = vx[saveBlockY+blockY][saveBlockX+blockX];
 				newSave->velocityY[saveBlockY][saveBlockX] = vy[saveBlockY+blockY][saveBlockX+blockX];
 				newSave->ambientHeat[saveBlockY][saveBlockX] = hv[saveBlockY+blockY][saveBlockX+blockX];
-				newSave->hasPressure = true;
 				newSave->hasAmbientHeat = true;
+			}
+			else
+			{
+				newSave->pressure[saveBlockY][saveBlockX] = 0;
+				newSave->velocityX[saveBlockY][saveBlockX] = 0;
+				newSave->velocityY[saveBlockY][saveBlockX] = 0;
 			}
 		}
 	}
@@ -5353,15 +5286,15 @@ Simulation::Simulation():
 	pretty_powder(0),
 	sandcolour_frame(0)
 {
-	int tportal_rx[] = {-1, 0, 1, 1, 1, 0,-1,-1};
-	int tportal_ry[] = {-1,-1,-1, 0, 1, 1, 1, 0};
+    int tportal_rx[] = {-1, 0, 1, 1, 1, 0,-1,-1};
+    int tportal_ry[] = {-1,-1,-1, 0, 1, 1, 1, 0};
+    
+    memcpy(portal_rx, tportal_rx, sizeof(tportal_rx));   
+    memcpy(portal_ry, tportal_ry, sizeof(tportal_ry));
 
-	memcpy(portal_rx, tportal_rx, sizeof(tportal_rx));
-	memcpy(portal_ry, tportal_ry, sizeof(tportal_ry));
-
-	currentTick = 0;
-	std::fill(elementCount, elementCount+PT_NUM, 0);
-	elementRecount = true;
+    currentTick = 0;
+    std::fill(elementCount, elementCount+PT_NUM, 0);
+    elementRecount = true;
 
 	//Create and attach gravity simulation
 	grav = new Gravity();

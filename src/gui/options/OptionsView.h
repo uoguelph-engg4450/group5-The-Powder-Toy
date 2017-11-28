@@ -12,6 +12,7 @@ class OptionsModel;
 class OptionsController;
 class OptionsView: public ui::Window {
 	OptionsController * c;
+	ui::Checkbox * includePressure;
 	ui::Checkbox * heatSimulation;
 	ui::Checkbox * ambientHeatSimulation;
 	ui::Checkbox * newtonianGravity;
@@ -19,7 +20,7 @@ class OptionsView: public ui::Window {
 	ui::DropDown * airMode;
 	ui::DropDown * gravityMode;
 	ui::DropDown * edgeMode;
-	ui::DropDown * scale;
+	ui::Checkbox * scale;
 	ui::Checkbox * fullscreen;
 	ui::Checkbox * fastquit;
 	ui::Checkbox * showAvatars;

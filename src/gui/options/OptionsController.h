@@ -19,6 +19,7 @@ public:
 	bool HasExited;
 	OptionsController(GameModel * gModel_, ControllerCallback * callback_);
 	void SetHeatSimulation(bool state);
+	void SetPressure(bool pressure);
 	void SetAmbientHeatSimulation(bool state);
 	void SetNewtonianGravity(bool state);
 	void SetWaterEqualisation(bool state);
@@ -26,7 +27,7 @@ public:
 	void SetAirMode(int airMode);
 	void SetEdgeMode(int edgeMode);
 	void SetFullscreen(bool fullscreen);
-	void SetScale(int scale);
+	void SetScale(bool scale);
 	void SetFastQuit(bool fastquit);
 	void SetShowAvatars(bool showAvatars);
 	void Set3dDepth(int depth);

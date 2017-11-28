@@ -1683,7 +1683,7 @@ int LuaScriptInterface::simulation_saveStamp(lua_State * l)
 	int w = luaL_optint(l,3,XRES-1);
 	int h = luaL_optint(l,4,YRES-1);
 	int includePressure = luaL_optint(l,5,1);
-	std::string name = luacon_controller->StampRegion(ui::Point(x, y), ui::Point(x+w, y+h), includePressure);
+	std::string name = luacon_controller->StampRegion(ui::Point(x, y), ui::Point(x+w, y+h));
 	lua_pushstring(l, name.c_str());
 	return 1;
 }
@@ -1711,7 +1711,7 @@ int LuaScriptInterface::simulation_loadStamp(lua_State * l)
 
 	if (tempfile)
 	{
-		if (!luacon_sim->Load(x, y, tempfile->GetGameSave(), includePressure))
+		if (!luacon_sim->Load(x, y, tempfile->GetGameSave()))
 		{
 			//luacon_sim->sys_pause = (tempfile->GetGameSave()->paused | luacon_model->GetPaused())?1:0;
 			lua_pushinteger(l, 1);
@@ -2230,8 +2230,8 @@ int LuaScriptInterface::renderer_renderModes(lua_State * l)
 	{
 		int size = 0;
 		luaL_checktype(l, 1, LUA_TTABLE);
-		size = lua_objlen(l, 1);
-
+		size = luaL_getn(l, 1);
+		
 		std::vector<unsigned int> renderModes;
 		for(int i = 1; i <= size; i++)
 		{
@@ -2263,8 +2263,8 @@ int LuaScriptInterface::renderer_displayModes(lua_State * l)
 	{
 		int size = 0;
 		luaL_checktype(l, 1, LUA_TTABLE);
-		size = lua_objlen(l, 1);
-
+		size = luaL_getn(l, 1);
+		
 		std::vector<unsigned int> displayModes;
 		for(int i = 1; i <= size; i++)
 		{
