@@ -4,7 +4,9 @@
 #include "cppunit/TestRunner.h"
 #include "cppunit/TestAssert.h"
 
-#include "../src/simulation/Simulation.h"
+
+#include <assert.h>
+#include "Simulation.h"
 
 class SimulationTest : public CppUnit::TestSuite
 {
@@ -169,28 +171,31 @@ public:
     }
     void SimulationTestCase::testIsBlocking()
     {
+	Simulation *sim = new Simulation();
         int result;
         //returns 1 if valid, 0 if blocking
-        result = is_blocking(1,1,1);
+        result = sim->is_blocking(1,1,1);
         assert(result == 1);
-        result = is_blocking(-1,-1,-1);
+        result = sim->is_blocking(-1,-1,-1);
         assert(result == 0);
-        result = is_blocking(9999,9999,9999);
+        result = sim->is_blocking(9999,9999,9999);
         assert(result == 0);
     }
     void SimulationTestCase::testIsBoundary()
     {
+	Simulation *sim = new Simulation();
         int result;
         //result is 1 if it is not a boundary
-        result = is_boundary(1,1,1);
+        result = sim->is_boundary(1,1,1);
         assert(result == 1);
-        result = is_boundary(-1,-1,-1);
+        result = sim->is_boundary(-1,-1,-1);
         assert(result == 0);
-        result = is_boundary(9999,9999,9999);
+        result = sim->is_boundary(9999,9999,9999);
         assert(result == 0);
     }
     void SimulationTestCase::testFindNextBoundary()
     {
+	Simulation *sim = new Simulation();
         int result;
         int *x;
         int *y;
@@ -205,7 +210,7 @@ public:
         *yBefore = *y;
         *em = 1;
         *emBefore = *em;
-        result = find_next_boundary(1,x,y,1,em);
+        result = sim->find_next_boundary(1,x,y,1,em);
         assert(result == 1);
         assert(*x != *xBefore);
         assert(*y != *yBefore);
@@ -218,7 +223,7 @@ public:
         *yBefore = *y;
         *em = -1;
         *emBefore = *em;
-        result = find_next_boundary(1,x,y,1,em);
+        result = sim->find_next_boundary(1,x,y,1,em);
         assert(result == 1);
         assert(*x == *xBefore);
         assert(*y == *yBefore);
@@ -227,21 +232,23 @@ public:
     }
     void SimulationTestCase::testPNJunctionSprk()
     {
+	Simulation *sim = new Simulation();
         int result;
-        result = pn_junction_sprk(1,1,1);
+        result = sim->pn_junction_sprk(1,1,1);
         assert(result == 1);
-        result = pn_junction_sprk(1,1,0);
+        result = sim->pn_junction_sprk(1,1,0);
         assert(result == 0);
-        result = pn_junction_sprk(-1,-1,1);
+        result = sim->pn_junction_sprk(-1,-1,1);
         assert(result == 0);
     }
     void SimulationTestCase::testPhotoelectricEffect()
     {
+	Simulation *sim = new Simulation();
         //see if any errors are thrown. they shouldn't be
-        photoelectric_effect(0,0);
-        photoelectric_effect(1,1);
-        photoelectric_effect(9999,9999);
-        photoelectric_effect(-5,-92);
+        sim->photoelectric_effect(0,0);
+        sim->photoelectric_effect(1,1);
+        sim->photoelectric_effect(9999,9999);
+        sim->photoelectric_effect(-5,-92);
     }
     void SimulationTestCase::testDirectionToMap()
     {
@@ -253,44 +260,47 @@ public:
     }
     void SimulationTestCase::testDoMove()
     {
+	Simulation *sim = new Simulation();
         int result;
         //result returns 1 if successful, otherwise 0
-        result = do_move(1,1,1,1,1);
+        result = sim->do_move(1,1,1,1,1);
         assert(result == 1);
-        result = do_move(-1,1,1,1,1);
+        result = sim->do_move(-1,1,1,1,1);
         assert(result == 0);
-        result = do_move(1,-1,-1,1,1);
+        result = sim->do_move(1,-1,-1,1,1);
         assert(result == 0);
     }
     void SimulationTestCase::testTryMove()
     {
+	Simulation *sim = new Simulation();
         int result;
         //result returns 1 if successful, otherwise 0
-        result = try_move(1,1,1,1,1);
+        result = sim->try_move(1,1,1,1,1);
         assert(result == 1);
-        result = try_move(1,-1,-1,1,1);
+        result = sim->try_move(1,-1,-1,1,1);
         assert(result == 0);
-        result = try_move(1,1,1,-1,-1);
+        result = sim->try_move(1,1,1,-1,-1);
         assert(result == 0);
-        result = try_move(-1,1,1,1,1);
+        result = sim->try_move(-1,1,1,1,1);
         assert(result == 0); 
     }
     void SimulationTestCase::testEvalMove()
     {
+	Simulation *sim = new Simulation();
         int result;
         unsigned * rr;
         *rr = 0;
-        result = eval_move(1,1,1,rr);
+        result = sim->eval_move(1,1,1,rr);
         assert(result == 1);
         assert(*rr != 0);
 
         *rr = 0;
-        result = eval_move(1,-3,-1,rr);
+        result = sim->eval_move(1,-3,-1,rr);
         assert(result == 0);
         assert(*rr != 0);
 
         *rr = 0;
-        result = eval_move(1,9999,9999,rr);
+        result = sim->eval_move(1,9999,9999,rr);
         assert(result == 0);
         assert(*rr != 0);
     }
