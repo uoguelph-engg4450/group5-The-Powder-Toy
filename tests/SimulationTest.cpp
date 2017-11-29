@@ -8,10 +8,16 @@
 
 class SimulationTest : public CppUnit::TestSuite
 {
+private:
+    GameSave * emptySave;
+    Snapshot * emptySnapshot;
+    SimulationSample * emptySample;
 public:
     void setup()
     {
-
+        emptySave = Save();
+        emptySnapshot = CreateSnapshot();
+        emptySample = GetSample(0,0);
     }
 
     void tearDown()
@@ -99,25 +105,58 @@ public:
 
     void SimulationTestCase::testLoad()
     {
-        assertEquals(true, true);
-        //int Load(GameSave * save);
+        //load returns 1 if there is an error
+
+        assertEquals(Load(emptySave), 0);
+        //normal x and y parameters
+        assertEquals(Load(4,7,emptySave), 0);
+        //negative x and y parameters
+        assertEquals(Load(-4,-7,emptySave), 1);
+        //very large x and y parameters
+        assertEquals(Load(4000,7000,emptySave), 1);
     }
     void SimulationTestCase::testSave()
     {
+        GameSave * result;
+        assert(*emptySave == *Save());
         //GameSave * Save();
-        //GameSave * Save(int x1, int y1, int x2, int y2);
+        result = Save(0,0,0,0);
+        assert(result != NULL);
+
+        result = Save(-4,-9,-98,-32);
+        assert(result != NULL);
+
+        result = Save(9999,9999,9999,9999);
+        assert(result != NULL);
     }
     void SimulationTestCase::testSaveSimOptions()
     {
-        //void SaveSimOptions(GameSave * gameSave);
+        GameSave * after = Save();
+        GameSave before = * after;
+
+        SaveSimOptions(after); //changes the state of GameSave * after
+        assert(*after != before);
     }
     void SimulationTestCase::testGetSample()
     {
-        //SimulationSample GetSample(int x, int y);
+        SimulationSample result = GetSample(0,0);
+        assert(result == emptySnapshot);
+
+        SimulationSample result = GetSample(10,10);
+        assert(result != emptySnapshot);
+
+        SimulationSample result = GetSample(-20,-80);
+        assert(result != emptySnapshot);
+
+        SimulationSample result = GetSample(9999,9999);
+        assert(result != emptySnapshot);
+
     }
     void SimulationTestCase::testCreateSnapshot()
     {
-        //Snapshot * CreateSnapshot();
+        Snapshot * result = CreateSnapshot();
+        assert(result != emptySnapshot);
+        assert(*result != *emptySnapshot);
     }
     void SimulationTestCase::testRestore()
     {
