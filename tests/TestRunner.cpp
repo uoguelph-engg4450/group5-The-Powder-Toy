@@ -11,7 +11,7 @@ int main ()
 {
     CppUnit::TextUi:TestRunner runner;
     runner.addTest(SimulationTestSuite::suite());
-    runner.addTest(OptionsViewTestSuite::suite());
+    //runner.addTest(OptionsViewTestSuite::suite());
     runner.run();
     return 0;
 }

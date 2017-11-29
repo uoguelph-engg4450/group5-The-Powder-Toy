@@ -4,7 +4,7 @@
 #include "cppunit/TestRunner.h"
 #include "cppunit/TestAssert.h"
 
-#include "../src/simulation/Simulation.h"
+#include "Simulation.h"
 
 class SimulationTest : public CppUnit::TestSuite
 {
@@ -25,7 +25,7 @@ public:
 
     }
 
-    TestSuite * SimulationTestCase::suite()
+    TestSuite * suite()
     {
         TestSuite *testSuite = new TestSuite("SimulationTestSuite");
         //add the tests
@@ -106,7 +106,7 @@ public:
         return testSuite;
     }
 
-    void SimulationTestCase::testLoad()
+    void testLoad()
     {
         //load returns 1 if there is an error
 
@@ -118,7 +118,7 @@ public:
         //very large x and y parameters
         assertEquals(Load(4000,7000,emptySave), 1);
     }
-    void SimulationTestCase::testSave()
+    void testSave()
     {
         GameSave * result;
         assert(*emptySave == *Save());
@@ -132,7 +132,7 @@ public:
         result = Save(9999,9999,9999,9999);
         assert(result != NULL);
     }
-    void SimulationTestCase::testSaveSimOptions()
+    void testSaveSimOptions()
     {
         GameSave * after = Save();
         GameSave before = * after;
@@ -140,7 +140,7 @@ public:
         SaveSimOptions(after); //changes the state of GameSave * after
         assert(*after != before);
     }
-    void SimulationTestCase::testGetSample()
+    void testGetSample()
     {
         SimulationSample result = GetSample(0,0);
         assert(result == emptySnapshot);
@@ -154,20 +154,20 @@ public:
         SimulationSample result = GetSample(9999,9999);
         assert(result != emptySnapshot);
     }
-    void SimulationTestCase::testCreateSnapshot()
+    void testCreateSnapshot()
     {
         Snapshot * result = CreateSnapshot();
         assert(result != emptySnapshot);
         assert(*result != *emptySnapshot);
     }
-    void SimulationTestCase::testRestore()
+    void testRestore()
     {
         Snapshot * after;
         *after = *emptySnapshot;
         Restore(&after);
         assert(*after == *emptySnapshot);
     }
-    void SimulationTestCase::testIsBlocking()
+    void testIsBlocking()
     {
         int result;
         //returns 1 if valid, 0 if blocking
@@ -178,7 +178,7 @@ public:
         result = is_blocking(9999,9999,9999);
         assert(result == 0);
     }
-    void SimulationTestCase::testIsBoundary()
+    void testIsBoundary()
     {
         int result;
         //result is 1 if it is not a boundary
@@ -189,7 +189,7 @@ public:
         result = is_boundary(9999,9999,9999);
         assert(result == 0);
     }
-    void SimulationTestCase::testFindNextBoundary()
+    void testFindNextBoundary()
     {
         int result;
         int *x;
@@ -225,7 +225,7 @@ public:
         assert(*em == *emBefore);
 
     }
-    void SimulationTestCase::testPNJunctionSprk()
+    void testPNJunctionSprk()
     {
         int result;
         result = pn_junction_sprk(1,1,1);
@@ -235,7 +235,7 @@ public:
         result = pn_junction_sprk(-1,-1,1);
         assert(result == 0);
     }
-    void SimulationTestCase::testPhotoelectricEffect()
+    void testPhotoelectricEffect()
     {
         //see if any errors are thrown. they shouldn't be
         photoelectric_effect(0,0);
@@ -243,7 +243,7 @@ public:
         photoelectric_effect(9999,9999);
         photoelectric_effect(-5,-92);
     }
-    void SimulationTestCase::testDirectionToMap()
+    void testDirectionToMap()
     {
         /*can someone please look at this function? i don't understand the shifts*/
         assert(1);
@@ -251,7 +251,7 @@ public:
         //result = direction_to_map();
         //unsigned direction_to_map(float dx, float dy, int t);
     }
-    void SimulationTestCase::testDoMove()
+    void testDoMove()
     {
         int result;
         //result returns 1 if successful, otherwise 0
@@ -262,7 +262,7 @@ public:
         result = do_move(1,-1,-1,1,1);
         assert(result == 0);
     }
-    void SimulationTestCase::testTryMove()
+    void testTryMove()
     {
         int result;
         //result returns 1 if successful, otherwise 0
@@ -275,7 +275,7 @@ public:
         result = try_move(-1,1,1,1,1);
         assert(result == 0); 
     }
-    void SimulationTestCase::testEvalMove()
+    void testEvalMove()
     {
         int result;
         unsigned * rr;
@@ -294,225 +294,225 @@ public:
         assert(result == 0);
         assert(*rr != 0);
     }
-    void SimulationTestCase::testInitCanMove()
+    void testInitCanMove()
     {
        //void init_can_move(); 
     }
-    void SimulationTestCase::testIsWallBlocking()
+    void testIsWallBlocking()
     {
         //bool IsWallBlocking(int x, int y, int type);
     }
-    void SimulationTestCase::testCreateCherenkovPhoton()
+    void testCreateCherenkovPhoton()
     {
         //void create_cherenkov_photon(int pp);
     }
-    void SimulationTestCase::testCreateGainPhoton()
+    void testCreateGainPhoton()
     {
         //void create_gain_photon(int pp);
     }
-    void SimulationTestCase::testKillPart()
+    void testKillPart()
     {
         //void kill_part(int i);
     }
-    void SimulationTestCase::testFloodFillPmapCheck()
+    void testFloodFillPmapCheck()
     {
         //bool FloodFillPmapCheck(int x, int y, int type);
     }
-    void SimulationTestCase::testFloodProp()
+    void testFloodProp()
     {
         //int flood_prop(int x, int y, size_t propoffset, PropertyValue propvalue, StructProperty::PropertyType proptype);
     }
-    void SimulationTestCase::testFloodWater()
+    void testFloodWater()
     {
         //int flood_water(int x, int y, int i, int originaly, int check);
     }
-    void SimulationTestCase::testFloodINST()
+    void testFloodINST()
     {
         //int FloodINST(int x, int y, int fullc, int cm);
     }
-    void SimulationTestCase::testDetach()
+    void testDetach()
     {
         //void detach(int i);
     }
-    void SimulationTestCase::testPartChangeType()
+    void testPartChangeType()
     {
         //void part_change_type(int i, int x, int y, int t);
     }
-    void SimulationTestCase::testCreatePart()
+    void testCreatePart()
     {
         //int create_part(int p, int x, int y, int t, int v = -1);
     }
-    void SimulationTestCase::testDeletePart()
+    void testDeletePart()
     {
         //void delete_part(int x, int y);
     }
-    void SimulationTestCase::testGetSignPos()
+    void testGetSignPos()
     {
         //void get_sign_pos(int i, int *x0, int *y0, int *w, int *h);
     }
-    void SimulationTestCase::testIsWire()
+    void testIsWire()
     {
         //int is_wire(int x, int y);
     }   
-    void SimulationTestCase::testIsWireOff()
+    void testIsWireOff()
     {
         //int is_wire_off(int x, int y);
     }   
-    void SimulationTestCase::testSetEmap()
+    void testSetEmap()
     {
         //void set_emap(int x, int y);
     }   
-    void SimulationTestCase::testPartsAvg()
+    void testPartsAvg()
     {
         //int parts_avg(int ci, int ni, int t);
     }   
-    void SimulationTestCase::testCreateArc()
+    void testCreateArc()
     {
         //void create_arc(int sx, int sy, int dx, int dy, int midpoints, int variance, int type, int flags);
     }   
-    void SimulationTestCase::testUpdateParticles()
+    void testUpdateParticles()
     {
         //void UpdateParticles(int start, int end);
     }   
-    void SimulationTestCase::testSimulateGol()
+    void testSimulateGol()
     {
         //void SimulateGoL();
     }   
-    void SimulationTestCase::testRecalcFreeParticles()
+    void testRecalcFreeParticles()
     {
         //void RecalcFreeParticles(bool do_life_dec);
     }   
-    void SimulationTestCase::testCheckStacking()
+    void testCheckStacking()
     {
         //void CheckStacking();
     }   
-    void SimulationTestCase::testBeforeSim()
+    void testBeforeSim()
     {
         //void BeforeSim();
     }   
-    void SimulationTestCase::testAfterSim()
+    void testAfterSim()
     {
         //void AfterSim();
     }   
-    void SimulationTestCase::testRotateArea()
+    void testRotateArea()
     {
         //void rotate_area(int area_x, int area_y, int area_w, int area_h, int invert);
     }   
-    void SimulationTestCase::testClearArea()
+    void testClearArea()
     {
         //void clear_area(int area_x, int area_y, int area_w, int area_h);
     }   
-    void SimulationTestCase::testEdgeMode()
+    void testEdgeMode()
     {
         //void SetEdgeMode(int newEdgeMode);
     }   
-    void SimulationTestCase::testApplyDecoration()
+    void testApplyDecoration()
     {
         //void ApplyDecoration(int x, int y, int colR, int colG, int colB, int colA, int mode);
     }   
-    void SimulationTestCase::testApplyDecorationPoint()
+    void testApplyDecorationPoint()
     {
         //void ApplyDecorationPoint(int x, int y, int colR, int colG, int colB, int colA, int mode, Brush * cBrush = NULL);
     }   
-    void SimulationTestCase::testApplyDecorationLine()
+    void testApplyDecorationLine()
     {
         //void ApplyDecorationLine(int x1, int y1, int x2, int y2, int colR, int colG, int colB, int colA, int mode, Brush * cBrush = NULL);
     }   
-    void SimulationTestCase::testApplyDecorationBox()
+    void testApplyDecorationBox()
     {
         //void ApplyDecorationBox(int x1, int y1, int x2, int y2, int colR, int colG, int colB, int colA, int mode);
     }   
-    void SimulationTestCase::testColorCompare()
+    void testColorCompare()
     {
         //bool ColorCompare(Renderer *ren, int x, int y, int replaceR, int replaceG, int replaceB);
     }   
-    void SimulationTestCase::testApplyDecorationFill()
+    void testApplyDecorationFill()
     {
         //void ApplyDecorationFill(Renderer *ren, int x, int y, int colR, int colG, int colB, int colA, int replaceR, int replaceG, int replaceB);
     }   
-    void SimulationTestCase::testTool()
+    void testTool()
     {
         //int Tool(int x, int y, int tool, float strength = 1.0f);
     } 
-    void SimulationTestCase::testToolBrush()
+    void testToolBrush()
     {
         //int ToolBrush(int x, int y, int tool, Brush * cBrush, float strength = 1.0f);
     } 
-    void SimulationTestCase::testToolLine()
+    void testToolLine()
     {
         //void ToolLine(int x1, int y1, int x2, int y2, int tool, Brush * cBrush, float strength = 1.0f);
     } 
-    void SimulationTestCase::testToolBox()
+    void testToolBox()
     {
         //void ToolBox(int x1, int y1, int x2, int y2, int tool, float strength = 1.0f);
     } 
-    void SimulationTestCase::testCreateWalls()
+    void testCreateWalls()
     {
         //int CreateWalls(int x, int y, int rx, int ry, int wall, Brush * cBrush = NULL);
     } 
-    void SimulationTestCase::testCreateWallLine()
+    void testCreateWallLine()
     {
         //void CreateWallLine(int x1, int y1, int x2, int y2, int rx, int ry, int wall, Brush * cBrush = NULL);
     } 
-    void SimulationTestCase::testCreateWallBox()
+    void testCreateWallBox()
     {
         //void CreateWallBox(int x1, int y1, int x2, int y2, int wall);
     } 
-    void SimulationTestCase::testFloodWalls()
+    void testFloodWalls()
     {
         //int FloodWalls(int x, int y, int wall, int bm);
     } 
-    void SimulationTestCase::testCreateParts()
+    void testCreateParts()
     {
         //int CreateParts(int positionX, int positionY, int c, Brush * cBrush, int flags = -1);
     } 
-    void SimulationTestCase::testCreatePartFlags()
+    void testCreatePartFlags()
     {
         //int CreatePartFlags(int x, int y, int c, int flags);
     } 
-    void SimulationTestCase::testCreateLine()
+    void testCreateLine()
     {
         //void CreateLine(int x1, int y1, int x2, int y2, int c, Brush * cBrush, int flags = -1);
         //void CreateLine(int x1, int y1, int x2, int y2, int c);
     } 
-    void SimulationTestCase::testCreateBox()
+    void testCreateBox()
     {
         //void CreateBox(int x1, int y1, int x2, int y2, int c, int flags = -1);
     } 
-    void SimulationTestCase::testFloodParts()
+    void testFloodParts()
     {
         //int FloodParts(int x, int y, int c, int cm, int flags = -1);
     } 
-    void SimulationTestCase::testGetGravityField()
+    void testGetGravityField()
     {
         //void GetGravityField(int x, int y, float particleGrav, float newtonGrav, float & pGravX, float & pGravY);
     }  
-    void SimulationTestCase::testParticleType()
+    void testParticleType()
     {
         //int GetParticleType(std::string type);
     } 
-    void SimulationTestCase::testGetOrbitalParts()
+    void testGetOrbitalParts()
     {
         //void orbitalparts_get(int block1, int block2, int resblock1[], int resblock2[]);
     } 
-    void SimulationTestCase::testSetOrbitalParts()
+    void testSetOrbitalParts()
     {
         // void orbitalparts_set(int *block1, int *block2, int resblock1[], int resblock2[]);
     } 
-    void SimulationTestCase::testGetWavelength()
+    void testGetWavelength()
     {
         //int get_wavelength_bin(int *wm);
     }  
-    void SimulationTestCase::testGetNormal()
+    void testGetNormal()
     {
         //int get_normal(int pt, int x, int y, float dx, float dy, float *nx, float *ny);
     } 
-    void SimulationTestCase::testGetNormalInterp()
+    void testGetNormalInterp()
     {
         //int get_normal_interp(int pt, float x0, float y0, float dx, float dy, float *nx, float *ny);
     } 
-    void SimulationTestCase::testClearSim()
+    void testClearSim()
     {
         //void clear_sim();
     } 
-}
+};

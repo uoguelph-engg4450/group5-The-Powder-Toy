@@ -4,10 +4,11 @@
 #include "cppunit/TestRunner.h"
 #include "cppunit/TestAssert.h"
 
-#include "../src/gui/options/OptionsView.h"
+#include "OptionsView.h"
 
-class OptionsViewTest : public CppUnit::TestSuite
+class OptionsViewTestCase : public CppUnit::TestSuite
 {
+    //TestSuite OptionsViewTestCase;
 public:
     void setup()
     {
@@ -19,48 +20,48 @@ public:
 
     }
 
-    TestSuite * OptionsViewTestCase::suite()
+    TestSuite * suite()
     {
         TestSuite *testSuite = new TestSuite("OptionsViewTestSuite");
         //add the tests
-        testSuite->addTest(new TestCaller <OptionsViewTestSuite> ("testOptionsView", &OptionsViewTestSuite::testOptionsView));
+        /*testSuite->addTest(new TestCaller <OptionsViewTestSuite> ("testOptionsView", &OptionsViewTestSuite::testOptionsView));
         testSuite->addTest(new TestCaller <OptionsViewTestSuite> ("testNotifySettingsChanged", &OptionsViewTestSuite::testNotifySettingsChanged));
         testSuite->addTest(new TestCaller <OptionsViewTestSuite> ("testAttachController", &OptionsViewTestSuite::testAttachController));
         testSuite->addTest(new TestCaller <OptionsViewTestSuite> ("testOnDraw", &OptionsViewTestSuite::testOnDraw));
-        testSuite->addTest(new TestCaller <OptionsViewTestSuite> ("testOnTryExit", &OptionsViewTestSuite::testOnTryExit));
+        testSuite->addTest(new TestCaller <OptionsViewTestSuite> ("testOnTryExit", &OptionsViewTestSuite::testOnTryExit));*/
         //....    
 
         return testSuite;
     }
 
-    void OptionsViewTestCase::testOptionsView()
+    void testOptionsView()
     {
-        assertEquals(true, true);
+        //assertEquals(true, true);
         //OptionsView();
     }
 
-    void OptionsViewTestCase::testNotifySettingsChanged()
+    void testNotifySettingsChanged()
     {
-        assertEquals(true, true);
+        //assertEquals(true, true);
         //void NotifySettingsChanged(OptionsModel * sender);
     }
 
-    void OptionsViewTestCase::testAttachController()
+    void testAttachController()
     {
-        assertEquals(true, true);
+        //assertEquals(true, true);
         //void AttachController(OptionsController * c_);
     }
 
-    void OptionsViewTestCase::testOnDraw()
+    void testOnDraw()
     {
-        assertEquals(true, true);
+        //assertEquals(true, true);
         //void OnDraw();
     }
 
-    void OptionsViewTestCase::testOnTryExit()
+    void testOnTryExit()
     {
-        assertEquals(true, true);
+        //assertEquals(true, true);
         //void OnTryExit(ExitMethod method);
     }
 
-}
+};
