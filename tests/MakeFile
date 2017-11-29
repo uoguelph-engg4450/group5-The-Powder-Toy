@@ -1,6 +1,11 @@
 
 LIBRARY = -lcppunit
-INCLUDE = -ISimulationTest.cpp -IOptionsViewTest.cpp
+INCLUDE := $(addprefix -I,$(shell find ../src -type d -print)) -I../generated
+SOURCES = SimulationTest.cpp OptionsViewTest.cpp TestRunner.cpp
+OBJ := $(SOURCES:%.cpp=%.o)
 
-runTest: TestRunner.o SimulationTest.o OptionsViewTest.o
-g++ -g -o runTest TestRunner.o SimulationTest.o  OptionsViewTest.o $(INCLUDE) $(LIBRARY)
+runTest: $(OBJ)
+	g++ -g -o runTest $(OBJ) $(LIBRARY) $(INCLUDE)
+
+%.o: %.cpp
+	g++ -c -o $@ $< $(LIBRARY) $(INCLUDE)
