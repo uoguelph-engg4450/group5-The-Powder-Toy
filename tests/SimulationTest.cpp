@@ -277,7 +277,22 @@ public:
     }
     void SimulationTestCase::testEvalMove()
     {
-        //int eval_move(int pt, int nx, int ny, unsigned *rr);
+        int result;
+        unsigned * rr;
+        *rr = 0;
+        result = eval_move(1,1,1,rr);
+        assert(result == 1);
+        assert(*rr != 0);
+
+        *rr = 0;
+        result = eval_move(1,-3,-1,rr);
+        assert(result == 0);
+        assert(*rr != 0);
+
+        *rr = 0;
+        result = eval_move(1,9999,9999,rr);
+        assert(result == 0);
+        assert(*rr != 0);
     }
     void SimulationTestCase::testInitCanMove()
     {
