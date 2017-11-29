@@ -30,7 +30,7 @@ public:
         TestSuite *testSuite = new TestSuite("SimulationTestSuite");
         //add the tests
         testSuite->addTest(new TestCaller <SimulationTestSuite> ("testLoad", &SimulationTestSuite::testLoad));
-        /*testSuite->addTest(new TestCaller <SimulationTestSuite> ("testSave", &SimulationTestSuite::testSave));
+        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testSave", &SimulationTestSuite::testSave));
         testSuite->addTest(new TestCaller <SimulationTestSuite> ("testSaveSimOptions", &SimulationTestSuite::testSaveSimOptions));
         testSuite->addTest(new TestCaller <SimulationTestSuite> ("testGetSample", &SimulationTestSuite::testGetSample));
         testSuite->addTest(new TestCaller <SimulationTestSuite> ("testCreateSnapshot", &SimulationTestSuite::testCreateSnapshot));
@@ -40,9 +40,12 @@ public:
         testSuite->addTest(new TestCaller <SimulationTestSuite> ("testFindNextBoundary", &SimulationTestSuite::testFindNextBoundary));
         testSuite->addTest(new TestCaller <SimulationTestSuite> ("testPNJunctionSprk", &SimulationTestSuite::testPNJunctionSprk));
         testSuite->addTest(new TestCaller <SimulationTestSuite> ("testPhotoelectricEffect", &SimulationTestSuite::testPhotoelectricEffect));
+
+
+        //someone please look at directionToMap
         testSuite->addTest(new TestCaller <SimulationTestSuite> ("testDirectionToMap", &SimulationTestSuite::testDirectionToMap));
         testSuite->addTest(new TestCaller <SimulationTestSuite> ("testDoMove", &SimulationTestSuite::testDoMove));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testTryMove", &SimulationTestSuite::testTryMove));
+        /*testSuite->addTest(new TestCaller <SimulationTestSuite> ("testTryMove", &SimulationTestSuite::testTryMove));
         testSuite->addTest(new TestCaller <SimulationTestSuite> ("testEvalMove", &SimulationTestSuite::testEvalMove));
         testSuite->addTest(new TestCaller <SimulationTestSuite> ("testInitCanMove", &SimulationTestSuite::testInitCanMove));
         testSuite->addTest(new TestCaller <SimulationTestSuite> ("testIsWallBlocking", &SimulationTestSuite::testIsWallBlocking));
@@ -150,7 +153,6 @@ public:
 
         SimulationSample result = GetSample(9999,9999);
         assert(result != emptySnapshot);
-
     }
     void SimulationTestCase::testCreateSnapshot()
     {
@@ -160,39 +162,118 @@ public:
     }
     void SimulationTestCase::testRestore()
     {
-        //void Restore(const Snapshot & snap);
+        Snapshot * after;
+        *after = *emptySnapshot;
+        Restore(&after);
+        assert(*after == *emptySnapshot);
     }
     void SimulationTestCase::testIsBlocking()
     {
-        //int is_blocking(int t, int x, int y);
+        int result;
+        //returns 1 if valid, 0 if blocking
+        result = is_blocking(1,1,1);
+        assert(result == 1);
+        result = is_blocking(-1,-1,-1);
+        assert(result == 0);
+        result = is_blocking(9999,9999,9999);
+        assert(result == 0);
     }
     void SimulationTestCase::testIsBoundary()
     {
-        //int is_boundary(int pt, int x, int y);
+        int result;
+        //result is 1 if it is not a boundary
+        result = is_boundary(1,1,1);
+        assert(result == 1);
+        result = is_boundary(-1,-1,-1);
+        assert(result == 0);
+        result = is_boundary(9999,9999,9999);
+        assert(result == 0);
     }
     void SimulationTestCase::testFindNextBoundary()
     {
-        //int find_next_boundary(int pt, int *x, int *y, int dm, int *em);
+        int result;
+        int *x;
+        int *y;
+        int *em;
+        int *xBefore;
+        int *yBefore;
+        int *emBefore;
+
+        *x = 1;
+        *xBefore = *x;
+        *y = 1;
+        *yBefore = *y;
+        *em = 1;
+        *emBefore = *em;
+        result = find_next_boundary(1,x,y,1,em);
+        assert(result == 1);
+        assert(*x != *xBefore);
+        assert(*y != *yBefore);
+        assert(*em != *emBefore);
+
+        //invalid inputs, should return 0 with variables unchanged
+        *x = -1;
+        *xBefore = *x;
+        *y = -1;
+        *yBefore = *y;
+        *em = -1;
+        *emBefore = *em;
+        result = find_next_boundary(1,x,y,1,em);
+        assert(result == 1);
+        assert(*x == *xBefore);
+        assert(*y == *yBefore);
+        assert(*em == *emBefore);
+
     }
     void SimulationTestCase::testPNJunctionSprk()
     {
-        //int pn_junction_sprk(int x, int y, int pt);
+        int result;
+        result = pn_junction_sprk(1,1,1);
+        assert(result == 1);
+        result = pn_junction_sprk(1,1,0);
+        assert(result == 0);
+        result = pn_junction_sprk(-1,-1,1);
+        assert(result == 0);
     }
     void SimulationTestCase::testPhotoelectricEffect()
     {
-        //void photoelectric_effect(int nx, int ny);
+        //see if any errors are thrown. they shouldn't be
+        photoelectric_effect(0,0);
+        photoelectric_effect(1,1);
+        photoelectric_effect(9999,9999);
+        photoelectric_effect(-5,-92);
     }
     void SimulationTestCase::testDirectionToMap()
     {
+        /*can someone please look at this function? i don't understand the shifts*/
+        assert(1);
+        //unsigned result;
+        //result = direction_to_map();
         //unsigned direction_to_map(float dx, float dy, int t);
     }
     void SimulationTestCase::testDoMove()
     {
-        //int do_move(int i, int x, int y, float nxf, float nyf);
+        int result;
+        //result returns 1 if successful, otherwise 0
+        result = do_move(1,1,1,1,1);
+        assert(result == 1);
+        result = do_move(-1,1,1,1,1);
+        assert(result == 0);
+        result = do_move(1,-1,-1,1,1);
+        assert(result == 0);
     }
     void SimulationTestCase::testTryMove()
     {
-        //int try_move(int i, int x, int y, int nx, int ny);   
+        int result;
+        //result returns 1 if successful, otherwise 0
+        result = try_move(1,1,1,1,1);
+        assert(result == 1);
+        result = try_move(1,-1,-1,1,1);
+        assert(result == 0);
+        result = try_move(1,1,1,-1,-1);
+        assert(result == 0);
+        result = try_move(-1,1,1,1,1);
+        assert(result == 0); 
     }
     void SimulationTestCase::testEvalMove()
     {
@@ -214,7 +295,7 @@ public:
     {
         //void create_gain_photon(int pp);
     }
-    void SimulationTestCase::testKillPart())
+    void SimulationTestCase::testKillPart()
     {
         //void kill_part(int i);
     }
@@ -234,7 +315,7 @@ public:
     {
         //int FloodINST(int x, int y, int fullc, int cm);
     }
-    void SimulationTestCase::testDetach())
+    void SimulationTestCase::testDetach()
     {
         //void detach(int i);
     }
