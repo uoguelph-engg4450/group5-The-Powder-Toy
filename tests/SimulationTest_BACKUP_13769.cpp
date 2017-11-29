@@ -4,8 +4,11 @@
 #include "cppunit/TestRunner.h"
 #include "cppunit/TestAssert.h"
 
+<<<<<<< HEAD
+=======
 
 #include <assert.h>
+>>>>>>> aa40ad44f96aa903a13193157517510db8ce6207
 #include "Simulation.h"
 
 class SimulationTest : public CppUnit::TestSuite
@@ -14,15 +17,12 @@ private:
     GameSave * emptySave;
     Snapshot * emptySnapshot;
     SimulationSample * emptySample;
-    Simulation * simulation;
 public:
     void setup()
     {
-
-        simulation = new Simulation();
-        emptySave = simulation->Save();
-        emptySnapshot = simulation->CreateSnapshot();
-        emptySample = simulation->GetSample(0,0);
+        emptySave = Save();
+        emptySnapshot = CreateSnapshot();
+        emptySample = GetSample(0,0);
     }
 
     void tearDown()
@@ -115,7 +115,7 @@ public:
     {
         //load returns 1 if there is an error
 
-        assertEquals(simulation->Load(emptySave), 0);
+        assertEquals(Load(emptySave), 0);
         //normal x and y parameters
         assertEquals(Load(4,7,emptySave), 0);
         //negative x and y parameters
@@ -161,9 +161,7 @@ public:
     }
     void testCreateSnapshot()
     {
-        Simulation *sim = new Simulation();
-
-        Snapshot * result = sim->CreateSnapshot();
+        Snapshot * result = CreateSnapshot();
         assert(result != emptySnapshot);
         assert(*result != *emptySnapshot);
     }
@@ -530,5 +528,8 @@ public:
     {
         //void clear_sim();
     } 
+<<<<<<< HEAD
 };
-
+=======
+}
+>>>>>>> aa40ad44f96aa903a13193157517510db8ce6207

@@ -4,8 +4,6 @@
 #include "cppunit/TestRunner.h"
 #include "cppunit/TestAssert.h"
 
-
-#include <assert.h>
 #include "Simulation.h"
 
 class SimulationTest : public CppUnit::TestSuite
@@ -14,15 +12,12 @@ private:
     GameSave * emptySave;
     Snapshot * emptySnapshot;
     SimulationSample * emptySample;
-    Simulation * simulation;
 public:
     void setup()
     {
-
-        simulation = new Simulation();
-        emptySave = simulation->Save();
-        emptySnapshot = simulation->CreateSnapshot();
-        emptySample = simulation->GetSample(0,0);
+        emptySave = Save();
+        emptySnapshot = CreateSnapshot();
+        emptySample = GetSample(0,0);
     }
 
     void tearDown()
@@ -115,7 +110,7 @@ public:
     {
         //load returns 1 if there is an error
 
-        assertEquals(simulation->Load(emptySave), 0);
+        assertEquals(Load(emptySave), 0);
         //normal x and y parameters
         assertEquals(Load(4,7,emptySave), 0);
         //negative x and y parameters
@@ -161,9 +156,7 @@ public:
     }
     void testCreateSnapshot()
     {
-        Simulation *sim = new Simulation();
-
-        Snapshot * result = sim->CreateSnapshot();
+        Snapshot * result = CreateSnapshot();
         assert(result != emptySnapshot);
         assert(*result != *emptySnapshot);
     }
@@ -176,31 +169,28 @@ public:
     }
     void testIsBlocking()
     {
-	Simulation *sim = new Simulation();
         int result;
         //returns 1 if valid, 0 if blocking
-        result = sim->is_blocking(1,1,1);
+        result = is_blocking(1,1,1);
         assert(result == 1);
-        result = sim->is_blocking(-1,-1,-1);
+        result = is_blocking(-1,-1,-1);
         assert(result == 0);
-        result = sim->is_blocking(9999,9999,9999);
+        result = is_blocking(9999,9999,9999);
         assert(result == 0);
     }
     void testIsBoundary()
     {
-	Simulation *sim = new Simulation();
         int result;
         //result is 1 if it is not a boundary
-        result = sim->is_boundary(1,1,1);
+        result = is_boundary(1,1,1);
         assert(result == 1);
-        result = sim->is_boundary(-1,-1,-1);
+        result = is_boundary(-1,-1,-1);
         assert(result == 0);
-        result = sim->is_boundary(9999,9999,9999);
+        result = is_boundary(9999,9999,9999);
         assert(result == 0);
     }
     void testFindNextBoundary()
     {
-	Simulation *sim = new Simulation();
         int result;
         int *x;
         int *y;
@@ -215,7 +205,7 @@ public:
         *yBefore = *y;
         *em = 1;
         *emBefore = *em;
-        result = sim->find_next_boundary(1,x,y,1,em);
+        result = find_next_boundary(1,x,y,1,em);
         assert(result == 1);
         assert(*x != *xBefore);
         assert(*y != *yBefore);
@@ -228,7 +218,7 @@ public:
         *yBefore = *y;
         *em = -1;
         *emBefore = *em;
-        result = sim->find_next_boundary(1,x,y,1,em);
+        result = find_next_boundary(1,x,y,1,em);
         assert(result == 1);
         assert(*x == *xBefore);
         assert(*y == *yBefore);
@@ -237,23 +227,21 @@ public:
     }
     void testPNJunctionSprk()
     {
-	Simulation *sim = new Simulation();
         int result;
-        result = sim->pn_junction_sprk(1,1,1);
+        result = pn_junction_sprk(1,1,1);
         assert(result == 1);
-        result = sim->pn_junction_sprk(1,1,0);
+        result = pn_junction_sprk(1,1,0);
         assert(result == 0);
-        result = sim->pn_junction_sprk(-1,-1,1);
+        result = pn_junction_sprk(-1,-1,1);
         assert(result == 0);
     }
     void testPhotoelectricEffect()
     {
-	Simulation *sim = new Simulation();
         //see if any errors are thrown. they shouldn't be
-        sim->photoelectric_effect(0,0);
-        sim->photoelectric_effect(1,1);
-        sim->photoelectric_effect(9999,9999);
-        sim->photoelectric_effect(-5,-92);
+        photoelectric_effect(0,0);
+        photoelectric_effect(1,1);
+        photoelectric_effect(9999,9999);
+        photoelectric_effect(-5,-92);
     }
     void testDirectionToMap()
     {
@@ -265,47 +253,44 @@ public:
     }
     void testDoMove()
     {
-	Simulation *sim = new Simulation();
         int result;
         //result returns 1 if successful, otherwise 0
-        result = sim->do_move(1,1,1,1,1);
+        result = do_move(1,1,1,1,1);
         assert(result == 1);
-        result = sim->do_move(-1,1,1,1,1);
+        result = do_move(-1,1,1,1,1);
         assert(result == 0);
-        result = sim->do_move(1,-1,-1,1,1);
+        result = do_move(1,-1,-1,1,1);
         assert(result == 0);
     }
     void testTryMove()
     {
-	Simulation *sim = new Simulation();
         int result;
         //result returns 1 if successful, otherwise 0
-        result = sim->try_move(1,1,1,1,1);
+        result = try_move(1,1,1,1,1);
         assert(result == 1);
-        result = sim->try_move(1,-1,-1,1,1);
+        result = try_move(1,-1,-1,1,1);
         assert(result == 0);
-        result = sim->try_move(1,1,1,-1,-1);
+        result = try_move(1,1,1,-1,-1);
         assert(result == 0);
-        result = sim->try_move(-1,1,1,1,1);
+        result = try_move(-1,1,1,1,1);
         assert(result == 0); 
     }
     void testEvalMove()
     {
-	Simulation *sim = new Simulation();
         int result;
         unsigned * rr;
         *rr = 0;
-        result = sim->eval_move(1,1,1,rr);
+        result = eval_move(1,1,1,rr);
         assert(result == 1);
         assert(*rr != 0);
 
         *rr = 0;
-        result = sim->eval_move(1,-3,-1,rr);
+        result = eval_move(1,-3,-1,rr);
         assert(result == 0);
         assert(*rr != 0);
 
         *rr = 0;
-        result = sim->eval_move(1,9999,9999,rr);
+        result = eval_move(1,9999,9999,rr);
         assert(result == 0);
         assert(*rr != 0);
     }
@@ -531,4 +516,3 @@ public:
         //void clear_sim();
     } 
 };
-
