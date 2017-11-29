@@ -17,13 +17,13 @@ private:
     SimulationSample  emptySample;
     Simulation * simulation;
 public:
-    void setup()
+    
+    void setUp()
     {
-
         simulation = new Simulation();
         emptySave = simulation->Save();
         emptySnapshot = simulation->CreateSnapshot();
-        emptySample = simulation->GetSample(0,0);
+        emptySample = simulation->GetSample(0,0);        
     }
 
     void tearDown()
