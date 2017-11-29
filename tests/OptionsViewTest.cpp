@@ -24,6 +24,8 @@ public:
     {
         TestSuite *testSuite = new TestSuite("OptionsViewTestSuite");
         //add the tests
+        
+        //Allan
         /*testSuite->addTest(new TestCaller <OptionsViewTestSuite> ("testOptionsView", &OptionsViewTestSuite::testOptionsView));
         testSuite->addTest(new TestCaller <OptionsViewTestSuite> ("testNotifySettingsChanged", &OptionsViewTestSuite::testNotifySettingsChanged));
         testSuite->addTest(new TestCaller <OptionsViewTestSuite> ("testAttachController", &OptionsViewTestSuite::testAttachController));

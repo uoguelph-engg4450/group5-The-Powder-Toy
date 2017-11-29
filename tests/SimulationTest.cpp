@@ -7,13 +7,14 @@
 
 #include <assert.h>
 #include "Simulation.h"
+#include "Sample.h"
 
 class SimulationTest : public CppUnit::TestSuite
 {
 private:
     GameSave * emptySave;
     Snapshot * emptySnapshot;
-    SimulationSample * emptySample;
+    SimulationSample  emptySample;
     Simulation * simulation;
 public:
     void setup()
@@ -34,129 +35,145 @@ public:
     {
         TestSuite *testSuite = new TestSuite("SimulationTestSuite");
         //add the tests
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testLoad", &SimulationTestSuite::testLoad));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testSave", &SimulationTestSuite::testSave));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testSaveSimOptions", &SimulationTestSuite::testSaveSimOptions));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testGetSample", &SimulationTestSuite::testGetSample));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testCreateSnapshot", &SimulationTestSuite::testCreateSnapshot));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testRestore", &SimulationTestSuite::testRestore));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testIsBlocking", &SimulationTestSuite::testIsBlocking));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testIsBoundary", &SimulationTestSuite::testIsBoundary));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testFindNextBoundary", &SimulationTestSuite::testFindNextBoundary));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testPNJunctionSprk", &SimulationTestSuite::testPNJunctionSprk));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testPhotoelectricEffect", &SimulationTestSuite::testPhotoelectricEffect));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testLoad", &SimulationTest::testLoad));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testSave", &SimulationTest::testSave));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testSaveSimOptions", &SimulationTest::testSaveSimOptions));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testGetSample", &SimulationTest::testGetSample));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testCreateSnapshot", &SimulationTest::testCreateSnapshot));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testRestore", &SimulationTest::testRestore));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testIsBlocking", &SimulationTest::testIsBlocking));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testIsBoundary", &SimulationTest::testIsBoundary));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testFindNextBoundary", &SimulationTest::testFindNextBoundary));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testPNJunctionSprk", &SimulationTest::testPNJunctionSprk));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testPhotoelectricEffect", &SimulationTest::testPhotoelectricEffect));
 
 
         //someone please look at directionToMap
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testDirectionToMap", &SimulationTestSuite::testDirectionToMap));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testDoMove", &SimulationTestSuite::testDoMove));
-        /*testSuite->addTest(new TestCaller <SimulationTestSuite> ("testTryMove", &SimulationTestSuite::testTryMove));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testEvalMove", &SimulationTestSuite::testEvalMove));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testInitCanMove", &SimulationTestSuite::testInitCanMove));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testIsWallBlocking", &SimulationTestSuite::testIsWallBlocking));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testCreateCherenkovPhoton", &SimulationTestSuite::testCreateCherenkovPhoton));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testCreateGainPhoton", &SimulationTestSuite::testCreateGainPhoton));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testKillPart", &SimulationTestSuite::testKillPart));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testFloodFillPmapCheck", &SimulationTestSuite::testFloodFillPmapCheck));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testFloodProp", &SimulationTestSuite::testFloodProp));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testFloodWater", &SimulationTestSuite::testFloodWater));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testFloodINST", &SimulationTestSuite::testFloodINST));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testDetach", &SimulationTestSuite::testDetach));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testPartChangeType", &SimulationTestSuite::testPartChangeType));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testCreatePart", &SimulationTestSuite::testCreatePart));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testDeletePart", &SimulationTestSuite::testDeletePart));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testGetSignPos", &SimulationTestSuite::testGetSignPos));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testIsWire", &SimulationTestSuite::testIsWire));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testIsWireOff", &SimulationTestSuite::testIsWireOff));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testSetEmap", &SimulationTestSuite::testSetEmap));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testPartsAvg", &SimulationTestSuite::testPartsAvg));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testCreateArc", &SimulationTestSuite::testCreateArc));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testUpdateParticles", &SimulationTestSuite::testUpdateParticles));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testSimulateGol", &SimulationTestSuite::testSimulateGol));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testRecalcFreeParticles", &SimulationTestSuite::testRecalcFreeParticles));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testCheckStacking", &SimulationTestSuite::testCheckStacking));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testBeforeSim", &SimulationTestSuite::testBeforeSim));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testAfterSim", &SimulationTestSuite::testAfterSim));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testRotateArea", &SimulationTestSuite::testRotateArea));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testClearArea", &SimulationTestSuite::testClearArea));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testEdgeMode", &SimulationTestSuite::testEdgeMode));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testApplyDecoration", &SimulationTestSuite::testApplyDecoration));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testApplyDecorationPoint", &SimulationTestSuite::testApplyDecorationPoint));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testApplyDecorationLine", &SimulationTestSuite::testApplyDecorationLine));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testApplyDecorationBox", &SimulationTestSuite::testApplyDecorationBox));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testColorCompare", &SimulationTestSuite::testColorCompare));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testApplyDecorationFill", &SimulationTestSuite::testApplyDecorationFill));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testTool", &SimulationTestSuite::testTool));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testToolBrush", &SimulationTestSuite::testToolBrush));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testToolLine", &SimulationTestSuite::testToolLine));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testToolBox", &SimulationTestSuite::testToolBox));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testCreateWalls", &SimulationTestSuite::testCreateWalls));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testCreateWallLine", &SimulationTestSuite::testCreateWallLine));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testCreateWallBox", &SimulationTestSuite::testCreateWallBox));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testFloodWalls", &SimulationTestSuite::testFloodWalls));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testCreateParts", &SimulationTestSuite::testCreateParts));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testCreatePartFlags", &SimulationTestSuite::testCreatePartFlags));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testCreateLine", &SimulationTestSuite::testCreateLine));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testCreateBox", &SimulationTestSuite::testCreateBox));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testFloodParts", &SimulationTestSuite::testFloodParts));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testGetGravityField", &SimulationTestSuite::testGetGravityField));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testParticleType", &SimulationTestSuite::testParticleType));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testGetOrbitalParts", &SimulationTestSuite::testGetOrbitalParts));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testSetOrbitalParts", &SimulationTestSuite::testSetOrbitalParts));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testGetWavelength", &SimulationTestSuite::testGetWavelength));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testGetNormal", &SimulationTestSuite::testGetNormal));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testGetNormalInterp", &SimulationTestSuite::testGetNormalInterp));
-        testSuite->addTest(new TestCaller <SimulationTestSuite> ("testClearSim", &SimulationTestSuite::testClearSim));*/
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testDirectionToMap", &SimulationTest::testDirectionToMap));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testDoMove", &SimulationTest::testDoMove));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testTryMove", &SimulationTest::testTryMove));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testEvalMove", &SimulationTest::testEvalMove));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testInitCanMove", &SimulationTest::testInitCanMove));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testIsWallBlocking", &SimulationTest::testIsWallBlocking));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testCreateCherenkovPhoton", &SimulationTest::testCreateCherenkovPhoton));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testCreateGainPhoton", &SimulationTest::testCreateGainPhoton));
+        
+
+
+        //Alfie
+        /*testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testKillPart", &SimulationTest::testKillPart));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testFloodFillPmapCheck", &SimulationTest::testFloodFillPmapCheck));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testFloodProp", &SimulationTest::testFloodProp));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testFloodWater", &SimulationTest::testFloodWater));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testFloodINST", &SimulationTest::testFloodINST));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testDetach", &SimulationTest::testDetach));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testPartChangeType", &SimulationTest::testPartChangeType));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testCreatePart", &SimulationTest::testCreatePart));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testDeletePart", &SimulationTest::testDeletePart));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testGetSignPos", &SimulationTest::testGetSignPos));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testIsWire", &SimulationTest::testIsWire));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testIsWireOff", &SimulationTest::testIsWireOff));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testSetEmap", &SimulationTest::testSetEmap));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testPartsAvg", &SimulationTest::testPartsAvg));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testCreateArc", &SimulationTest::testCreateArc));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testUpdateParticles", &SimulationTest::testUpdateParticles));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testSimulateGol", &SimulationTest::testSimulateGol));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testRecalcFreeParticles", &SimulationTest::testRecalcFreeParticles));
+        */
+
+        //Brandon 
+        /*testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testCheckStacking", &SimulationTest::testCheckStacking));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testBeforeSim", &SimulationTest::testBeforeSim));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testAfterSim", &SimulationTest::testAfterSim));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testRotateArea", &SimulationTest::testRotateArea));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testClearArea", &SimulationTest::testClearArea));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testEdgeMode", &SimulationTest::testEdgeMode));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testApplyDecoration", &SimulationTest::testApplyDecoration));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testApplyDecorationPoint", &SimulationTest::testApplyDecorationPoint));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testApplyDecorationLine", &SimulationTest::testApplyDecorationLine));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testApplyDecorationBox", &SimulationTest::testApplyDecorationBox));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testColorCompare", &SimulationTest::testColorCompare));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testApplyDecorationFill", &SimulationTest::testApplyDecorationFill));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testTool", &SimulationTest::testTool));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testToolBrush", &SimulationTest::testToolBrush));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testToolLine", &SimulationTest::testToolLine));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testToolBox", &SimulationTest::testToolBox));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testCreateWalls", &SimulationTest::testCreateWalls));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testCreateWallLine", &SimulationTest::testCreateWallLine));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testCreateWallBox", &SimulationTest::testCreateWallBox));
+        */
+
+
+        //Allan + 4 in OptionsViewTest
+        /*testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testFloodWalls", &SimulationTest::testFloodWalls));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testCreateParts", &SimulationTest::testCreateParts));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testCreatePartFlags", &SimulationTest::testCreatePartFlags));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testCreateLine", &SimulationTest::testCreateLine));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testCreateBox", &SimulationTest::testCreateBox));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testFloodParts", &SimulationTest::testFloodParts));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testGetGravityField", &SimulationTest::testGetGravityField));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testParticleType", &SimulationTest::testParticleType));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testGetOrbitalParts", &SimulationTest::testGetOrbitalParts));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testSetOrbitalParts", &SimulationTest::testSetOrbitalParts));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testGetWavelength", &SimulationTest::testGetWavelength));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testGetNormal", &SimulationTest::testGetNormal));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testGetNormalInterp", &SimulationTest::testGetNormalInterp));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testClearSim", &SimulationTest::testClearSim));*/
         
         return testSuite;
     }
 
     void testLoad()
     {
+        Simulation *sim = new Simulation();
         //load returns 1 if there is an error
 
-        assertEquals(simulation->Load(emptySave), 0);
+        CPPUNIT_ASSERT_EQUAL(sim->Load(emptySave), 0);
         //normal x and y parameters
-        assertEquals(Load(4,7,emptySave), 0);
+        CPPUNIT_ASSERT_EQUAL(sim->Load(4,7,emptySave), 0);
         //negative x and y parameters
-        assertEquals(Load(-4,-7,emptySave), 1);
+        CPPUNIT_ASSERT_EQUAL(sim->Load(-4,-7,emptySave), 1);
         //very large x and y parameters
-        assertEquals(Load(4000,7000,emptySave), 1);
+        CPPUNIT_ASSERT_EQUAL(sim->Load(4000,7000,emptySave), 1);
     }
     void testSave()
     {
+        Simulation *sim = new Simulation();
         GameSave * result;
-        assert(*emptySave == *Save());
+        assert(*emptySave == *sim->Save());
         //GameSave * Save();
-        result = Save(0,0,0,0);
+        result = sim->Save(0,0,0,0);
         assert(result != NULL);
 
-        result = Save(-4,-9,-98,-32);
+        result = sim->Save(-4,-9,-98,-32);
         assert(result != NULL);
 
-        result = Save(9999,9999,9999,9999);
+        result = sim->Save(9999,9999,9999,9999);
         assert(result != NULL);
     }
     void testSaveSimOptions()
     {
-        GameSave * after = Save();
+        Simulation *sim = new Simulation();
+        GameSave * after = sim->Save();
         GameSave before = * after;
 
-        SaveSimOptions(after); //changes the state of GameSave * after
+        sim->SaveSimOptions(after); //changes the state of GameSave * after
         assert(*after != before);
     }
     void testGetSample()
     {
-        SimulationSample result = GetSample(0,0);
+        Simulation *sim = new Simulation();
+
+        SimulationSample result = sim->GetSample(0,0);
         assert(result == emptySnapshot);
 
-        SimulationSample result = GetSample(10,10);
+        result = sim->GetSample(10,10);
         assert(result != emptySnapshot);
 
-        SimulationSample result = GetSample(-20,-80);
+        result = sim->GetSample(-20,-80);
         assert(result != emptySnapshot);
 
-        SimulationSample result = GetSample(9999,9999);
+        result = sim->GetSample(9999,9999);
         assert(result != emptySnapshot);
     }
     void testCreateSnapshot()
@@ -169,9 +186,10 @@ public:
     }
     void testRestore()
     {
+        Simulation *sim = new Simulation();
         Snapshot * after;
         *after = *emptySnapshot;
-        Restore(&after);
+        sim->Restore(&after);
         assert(*after == *emptySnapshot);
     }
     void testIsBlocking()
