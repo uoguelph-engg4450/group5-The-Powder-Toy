@@ -8,6 +8,23 @@
 #include <assert.h>
 #include "Simulation.h"
 #include "Sample.h"
+#include "Brush.h"
+
+//Tianyue: This function compares 2 void pointers byte by byte
+bool equals(void *lhs, void *rhs)
+{
+	unsigned long sl = sizeof lhs, sr = sizeof rhs;
+	unsigned char t1, t2;
+
+	if (sl != sr) return false;
+	for (unsigned long i = 0; i < sl; i++)
+	{
+		t1 = *((unsigned char *)(lhs + i));
+		t2 = *((unsigned char *)(rhs + i));
+		if (t1 != t2) return false;
+	}
+	return true;
+}
 
 class SimulationTest : public CppUnit::TestSuite
 {
@@ -105,7 +122,7 @@ public:
 
 
         //Allan + 4 in OptionsViewTest
-        /*testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testFloodWalls", &SimulationTest::testFloodWalls));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testFloodWalls", &SimulationTest::testFloodWalls));
         testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testCreateParts", &SimulationTest::testCreateParts));
         testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testCreatePartFlags", &SimulationTest::testCreatePartFlags));
         testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testCreateLine", &SimulationTest::testCreateLine));
@@ -118,7 +135,7 @@ public:
         testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testGetWavelength", &SimulationTest::testGetWavelength));
         testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testGetNormal", &SimulationTest::testGetNormal));
         testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testGetNormalInterp", &SimulationTest::testGetNormalInterp));
-        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testClearSim", &SimulationTest::testClearSim));*/
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testClearSim", &SimulationTest::testClearSim));
         
         return testSuite;
     }
@@ -493,60 +510,120 @@ public:
     } 
     void testFloodWalls()
     {
-        //int FloodWalls(int x, int y, int wall, int bm);
+        Simulation *sim = new Simulation();
+	int x = 1, y = 1, wall = 1, bm = 1;
+
+	CPPUNIT_ASSERT(sim->FloodWalls(x, y, wall, bm));
     } 
     void testCreateParts()
     {
-        //int CreateParts(int positionX, int positionY, int c, Brush * cBrush, int flags = -1);
+        Simulation *sim = new Simulation();
+	int positionX = 1, positionY = 1, c = 1;
+	ui::Point p = {1, 1};
+	Brush * cBrush = new Brush(p);
+
+	CPPUNIT_ASSERT(sim->CreateParts(positionX, positionY, c, cBrush));
     } 
     void testCreatePartFlags()
     {
-        //int CreatePartFlags(int x, int y, int c, int flags);
+        Simulation *sim = new Simulation();
+	int x = 1, y = 1, c = 1, flags = 0;
+
+	CPPUNIT_ASSERT(sim->CreatePartFlags(x, y, c, flags));
     } 
     void testCreateLine()
     {
-        //void CreateLine(int x1, int y1, int x2, int y2, int c, Brush * cBrush, int flags = -1);
-        //void CreateLine(int x1, int y1, int x2, int y2, int c);
+        Simulation *sim = new Simulation();
+	int x1 = 1, y1 = 1, x2 = 2, y2 = 2, c = 1;
+	ui::Point p = {1, 1};
+	Brush * cBrush = new Brush(p);
+
+	sim->CreateLine(x1, y1, x2, y2, c, cBrush);
+	CPPUNIT_ASSERT(sim);
+
+	sim->CreateLine(x1, y1, x2, y2, c);
+	CPPUNIT_ASSERT(sim);
     } 
     void testCreateBox()
     {
-        //void CreateBox(int x1, int y1, int x2, int y2, int c, int flags = -1);
+        Simulation *sim = new Simulation();
+	int x1 = 1, y1 = 1, x2 = 2, y2 = 2, c = 1;
+
+	sim->CreateBox(x1, y1, x2, y2, c);
+	CPPUNIT_ASSERT(sim);
     } 
     void testFloodParts()
     {
-        //int FloodParts(int x, int y, int c, int cm, int flags = -1);
+        Simulation *sim = new Simulation();
+	int x = 1, y = 1, c = 1, cm = 1;
+
+	CPPUNIT_ASSERT(sim->FloodParts(x, y, c, cm));
     } 
     void testGetGravityField()
     {
-        //void GetGravityField(int x, int y, float particleGrav, float newtonGrav, float & pGravX, float & pGravY);
+        Simulation *sim = new Simulation();
+	int x = 1, y = 1;
+	float particleGrav = 1, newtonGrav = 1, pGravX = 1, pGravY = 1;
+
+	sim->GetGravityField(x, y, particleGrav, newtonGrav, pGravX, pGravY);
+	CPPUNIT_ASSERT(sim);
     }  
     void testParticleType()
     {
-        //int GetParticleType(std::string type);
+        Simulation *sim = new Simulation();
+
+	CPPUNIT_ASSERT(sim->GetParticleType("TSNS"));
     } 
     void testGetOrbitalParts()
     {
-        //void orbitalparts_get(int block1, int block2, int resblock1[], int resblock2[]);
+        Simulation *sim = new Simulation();
+	int block1 = 1, block2 = 1, resblock1[1], resblock2[1];
+
+	sim->orbitalparts_get(block1, block2, resblock1, resblock2);
+	CPPUNIT_ASSERT(sim);
     } 
     void testSetOrbitalParts()
     {
-        // void orbitalparts_set(int *block1, int *block2, int resblock1[], int resblock2[]);
+        Simulation *sim = new Simulation();
+	int *block1, *block2, resblock1[1], resblock2[1];
+	*block1 = 1;
+	*block2 = 1;
+
+	sim->orbitalparts_set(block1, block2, resblock1, resblock2);
+	CPPUNIT_ASSERT(sim);
     } 
     void testGetWavelength()
     {
-        //int get_wavelength_bin(int *wm);
+        Simulation *sim = new Simulation();
+	int *wm;
+	*wm = 1;
+
+	CPPUNIT_ASSERT(sim->get_wavelength_bin(wm));
     }  
     void testGetNormal()
     {
-        //int get_normal(int pt, int x, int y, float dx, float dy, float *nx, float *ny);
+        Simulation *sim = new Simulation();
+	int pt = 10, x = 1, y = 1, dx = 1, dy = 1;
+	float *nx, *ny;
+
+	CPPUNIT_ASSERT(sim->get_normal(pt, x, y, dx, dy, nx, ny));
     } 
     void testGetNormalInterp()
     {
-        //int get_normal_interp(int pt, float x0, float y0, float dx, float dy, float *nx, float *ny);
+        Simulation *sim = new Simulation();
+	int pt = 10;
+	float x0 = 1, y0 = 1, dx = 1, dy = 1, *nx, *ny;
+	*nx = 1;
+	*ny = 1;
+
+	CPPUNIT_ASSERT(sim->get_normal_interp(pt, x0, y0, dx, dy, nx, ny));
     } 
     void testClearSim()
     {
-        //void clear_sim();
+        Simulation *sim = new Simulation();
+	sim->clear_sim();
+
+	CPPUNIT_ASSERT(sim);
     } 
 };
 
