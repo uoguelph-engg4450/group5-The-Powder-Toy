@@ -157,7 +157,7 @@ public:
     {
         Simulation *sim = new Simulation();
         GameSave * result;
-        assert(*emptySave == *sim->Save());
+        assert(equals(emptySave, sim->Save()));
         //GameSave * Save();
         result = sim->Save(0,0,0,0);
         assert(result != NULL);
@@ -172,42 +172,42 @@ public:
     {
         Simulation *sim = new Simulation();
         GameSave * after = sim->Save();
-        GameSave before = * after;
+        GameSave * before = sim->Save();
+        before = after;
 
         sim->SaveSimOptions(after); //changes the state of GameSave * after
-        assert(*after != before);
+        assert(!equals(after,before));
     }
     void testGetSample()
     {
         Simulation *sim = new Simulation();
 
         SimulationSample result = sim->GetSample(0,0);
-        assert(result == emptySnapshot);
+        assert(equals(&result,&emptySample));
 
         result = sim->GetSample(10,10);
-        assert(result != emptySnapshot);
+        assert(!equals(&result,&emptySample));
 
         result = sim->GetSample(-20,-80);
-        assert(result != emptySnapshot);
+        assert(!equals(&result,&emptySample));
 
         result = sim->GetSample(9999,9999);
-        assert(result != emptySnapshot);
+        assert(!equals(&result,&emptySample));
     }
     void testCreateSnapshot()
     {
         Simulation *sim = new Simulation();
 
         Snapshot * result = sim->CreateSnapshot();
-        assert(result != emptySnapshot);
-        assert(*result != *emptySnapshot);
+        assert(!equals(result,emptySnapshot));
     }
     void testRestore()
     {
         Simulation *sim = new Simulation();
         Snapshot * after;
-        *after = *emptySnapshot;
-        sim->Restore(&after);
-        assert(*after == *emptySnapshot);
+        after = emptySnapshot;
+        sim->Restore(*after);
+        assert(equals(after,emptySnapshot));
     }
     void testIsBlocking()
     {
