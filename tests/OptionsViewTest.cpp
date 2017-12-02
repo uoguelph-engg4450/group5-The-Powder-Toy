@@ -4,13 +4,14 @@
 #include "cppunit/TestRunner.h"
 #include "cppunit/TestAssert.h"
 
-#include "OptionsView.h"
+#include "../src/gui/interface/Window.h"
+#include "../src/gui/options/OptionsView.h"
 
-class OptionsViewTestCase : public CppUnit::TestSuite
+class OptionsViewTest : public CppUnit::TestSuite
 {
     //TestSuite OptionsViewTestCase;
 public:
-    void setup()
+    void setUp()
     {
 
     }
@@ -24,46 +25,53 @@ public:
     {
         TestSuite *testSuite = new TestSuite("OptionsViewTestSuite");
         //add the tests
-        
-        //Allan
-        /*testSuite->addTest(new TestCaller <OptionsViewTestSuite> ("testOptionsView", &OptionsViewTestSuite::testOptionsView));
-        testSuite->addTest(new TestCaller <OptionsViewTestSuite> ("testNotifySettingsChanged", &OptionsViewTestSuite::testNotifySettingsChanged));
-        testSuite->addTest(new TestCaller <OptionsViewTestSuite> ("testAttachController", &OptionsViewTestSuite::testAttachController));
-        testSuite->addTest(new TestCaller <OptionsViewTestSuite> ("testOnDraw", &OptionsViewTestSuite::testOnDraw));
-        testSuite->addTest(new TestCaller <OptionsViewTestSuite> ("testOnTryExit", &OptionsViewTestSuite::testOnTryExit));*/
-        //....    
+        testSuite->addTest(new CppUnit::TestCaller <OptionsViewTest> ("testOptionsView", &OptionsViewTest::testOptionsView));
+        testSuite->addTest(new CppUnit::TestCaller <OptionsViewTest> ("testNotifySettingsChanged", &OptionsViewTest::testNotifySettingsChanged));
+        testSuite->addTest(new CppUnit::TestCaller <OptionsViewTest> ("testAttachController", &OptionsViewTest::testAttachController));
+        testSuite->addTest(new CppUnit::TestCaller <OptionsViewTest> ("testOnDraw", &OptionsViewTest::testOnDraw));
+        testSuite->addTest(new CppUnit::TestCaller <OptionsViewTest> ("testOnTryExit", &OptionsViewTest::testOnTryExit));
 
         return testSuite;
     }
 
     void testOptionsView()
     {
-        //assertEquals(true, true);
-        //OptionsView();
+	OptionsView * opt = new OptionsView();
+        CPPUNIT_ASSERT(opt);
     }
 
     void testNotifySettingsChanged()
     {
-        //assertEquals(true, true);
-        //void NotifySettingsChanged(OptionsModel * sender);
+	OptionsView * opt = new OptionsView();
+        OptionsModel * sender = new OptionsModel(NULL);
+
+        opt->NotifySettingsChanged(sender);
+        CPPUNIT_ASSERT(opt);
     }
 
     void testAttachController()
     {
-        //assertEquals(true, true);
-        //void AttachController(OptionsController * c_);
+	OptionsView * opt = new OptionsView();
+        OptionsController * cont = new OptionsController(NULL, NULL);
+
+        opt->AttachController(cont);
+        CPPUNIT_ASSERT(opt);
     }
 
     void testOnDraw()
     {
-        //assertEquals(true, true);
-        //void OnDraw();
+	OptionsView * opt = new OptionsView();
+
+        opt->OnDraw();
+        CPPUNIT_ASSERT(opt);
     }
 
     void testOnTryExit()
     {
-        //assertEquals(true, true);
-        //void OnTryExit(ExitMethod method);
+	OptionsView * opt = new OptionsView();
+
+        opt->OnTryExit(ui::Window::ExitButton);
+        CPPUNIT_ASSERT(opt);
     }
 
 };

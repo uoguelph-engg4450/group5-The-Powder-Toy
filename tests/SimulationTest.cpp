@@ -6,27 +6,11 @@
 #include <stdlib.h>         //needed for atoi
 
 #include <assert.h>
-#include "Simulation.h"
-#include "Snapshot.h"
-#include "Sample.h"
-#include "Brush.h"
-#include "Particle.h"
-
-//Tianyue: This function compares 2 void pointers byte by byte
-bool equals(void *lhs, void *rhs)
-{
-	unsigned long sl = sizeof lhs, sr = sizeof rhs;
-	unsigned char t1, t2;
-
-	if (sl != sr) return false;
-	for (unsigned long i = 0; i < sl; i++)
-	{
-		t1 = *((unsigned char *)(lhs + i));
-		t2 = *((unsigned char *)(rhs + i));
-		if (t1 != t2) return false;
-	}
-	return true;
-}
+#include "../src/simulation/Simulation.h"
+#include "../src/simulation/Snapshot.h"
+#include "../src/simulation/Sample.h"
+#include "../src/gui/game/Brush.h"
+#include "../src/simulation/Particle.h"
 
 class SimulationTest : public CppUnit::TestSuite
 {
@@ -36,7 +20,22 @@ private:
     SimulationSample  emptySample;
     Simulation * simulation;
 public:
-    
+	//Tianyue: This function compares 2 void pointers byte by byte
+	bool equals(void *lhs, void *rhs)
+	{
+		unsigned long sl = sizeof lhs, sr = sizeof rhs;
+		unsigned char t1, t2;
+
+		if (sl != sr) return false;
+		for (unsigned long i = 0; i < sl; i++)
+		{
+			t1 = *((unsigned char *)(lhs + i));
+			t2 = *((unsigned char *)(rhs + i));
+			if (t1 != t2) return false;
+		}
+		return true;
+	}
+
     void setUp()
     {
         simulation = new Simulation();
@@ -557,7 +556,7 @@ public:
     {
         Simulation *sim = new Simulation();
 	int positionX = 1, positionY = 1, c = 1;
-	ui::Point p = {1, 1};
+	ui::Point p(1,1);
 	Brush * cBrush = new Brush(p);
 
 	CPPUNIT_ASSERT(sim->CreateParts(positionX, positionY, c, cBrush));
@@ -573,7 +572,7 @@ public:
     {
         Simulation *sim = new Simulation();
 	int x1 = 1, y1 = 1, x2 = 2, y2 = 2, c = 1;
-	ui::Point p = {1, 1};
+	ui::Point p(1, 1);
 	Brush * cBrush = new Brush(p);
 
 	sim->CreateLine(x1, y1, x2, y2, c, cBrush);
