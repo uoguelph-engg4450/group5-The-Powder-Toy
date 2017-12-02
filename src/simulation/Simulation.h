@@ -13,7 +13,7 @@
 #include "WallType.h"
 #include "GOLMenu.h"
 #include "MenuSection.h"
-#include "Element.h"
+#include "elements/Element.h"
 
 #define CHANNELS ((int)(MAX_TEMP-73)/100+2)
 #define TESTING 1
