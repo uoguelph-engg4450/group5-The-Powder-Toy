@@ -7,8 +7,10 @@
 
 #include <assert.h>
 #include "Simulation.h"
+#include "Snapshot.h"
 #include "Sample.h"
 #include "Brush.h"
+#include "Particle.h"
 
 //Tianyue: This function compares 2 void pointers byte by byte
 bool equals(void *lhs, void *rhs)
@@ -63,9 +65,6 @@ public:
         testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testFindNextBoundary", &SimulationTest::testFindNextBoundary));
         testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testPNJunctionSprk", &SimulationTest::testPNJunctionSprk));
         testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testPhotoelectricEffect", &SimulationTest::testPhotoelectricEffect));
-
-
-        //someone please look at directionToMap
         testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testDirectionToMap", &SimulationTest::testDirectionToMap));
         testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testDoMove", &SimulationTest::testDoMove));
         testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testTryMove", &SimulationTest::testTryMove));
@@ -292,11 +291,15 @@ public:
     }
     void testDirectionToMap()
     {
-        /*can someone please look at this function? i don't understand the shifts*/
-        assert(1);
-        //unsigned result;
-        //result = direction_to_map();
-        //unsigned direction_to_map(float dx, float dy, int t);
+        Simulation *sim = new Simulation();
+        int result = sim->direction_to_map(0,0,0);
+        assert(result == 0 || result == 1);
+
+        result = sim->direction_to_map(-1,-2,0);
+        assert(result == 0);
+
+        result = sim->direction_to_map(10,2,5);
+        assert(result == 1);
     }
     void testDoMove()
     {
@@ -367,12 +370,31 @@ public:
     }
     void testCreateCherenkovPhoton()
     {
-        
-        //void create_cherenkov_photon(int pp);
+        Simulation *sim = new Simulation(); 
+        Particle * parts = sim->parts;
+        Particle * result ;
+
+        sim->create_cherenkov_photon(-1);
+        result = sim->parts;
+        assert(equals(&parts, &result));
+
+        sim->create_cherenkov_photon(10);
+        result = sim->parts;
+        assert(!equals(&parts, &result));
     }
     void testCreateGainPhoton()
     {
-        //void create_gain_photon(int pp);
+        Simulation *sim = new Simulation(); 
+        Particle * parts = sim->parts;
+        Particle * result ;
+
+        sim->create_gain_photon(-1);
+        result = sim->parts;
+        assert(equals(&parts, &result));
+
+        sim->create_gain_photon(10);
+        result = sim->parts;
+        assert(!equals(&parts, &result));
     }
 
     //Alfie
