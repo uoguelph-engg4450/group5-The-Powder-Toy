@@ -3,7 +3,7 @@
 #include "cppunit/TestCaller.h"
 #include "cppunit/TestRunner.h"
 #include "cppunit/TestAssert.h"
-
+#include <stdlib.h>         //needed for atoi
 
 #include <assert.h>
 #include "Simulation.h"
@@ -346,20 +346,36 @@ public:
     }
     void testInitCanMove()
     {
-       //void init_can_move(); 
+        Simulation *sim = new Simulation();
+        sim->init_can_move();
+        assert(atoi(&sim->can_move[2][3]) >= 0);
+        assert(atoi(&sim->can_move[2][3]) <=3);
     }
     void testIsWallBlocking()
     {
-        //bool IsWallBlocking(int x, int y, int type);
+        Simulation *sim = new Simulation();   
+        bool result;
+
+        result = sim->IsWallBlocking(3,4,7);
+        assert(result);
+
+        result = sim->IsWallBlocking(-1,-1,4);
+        assert(!result);
+
+        result = sim->IsWallBlocking(9999,9999,-1);
+        assert(!result);
     }
     void testCreateCherenkovPhoton()
     {
+        
         //void create_cherenkov_photon(int pp);
     }
     void testCreateGainPhoton()
     {
         //void create_gain_photon(int pp);
     }
+
+    //Alfie
     void testKillPart()
     {
         //void kill_part(int i);
