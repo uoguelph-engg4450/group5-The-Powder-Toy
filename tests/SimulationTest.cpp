@@ -38,7 +38,7 @@ public:
 
     void setUp()
     {
-        simulation = new Simulation();
+	simulation = new Simulation();
         emptySave = simulation->Save();
         emptySnapshot = simulation->CreateSnapshot();
         emptySample = simulation->GetSample(0,0);        
@@ -428,15 +428,15 @@ public:
     void testFloodProp()
     {
 		int result;
-		//Integer might need to be StructProperty::Integer instead
-		result = sim->flood_prop(1,1,offsetof(Particle, 1), 3, Integer);
-		assert(result == -1);
-        //int flood_prop(int x, int y, size_t propoffset, PropertyValue propvalue, StructProperty::PropertyType proptype);
-		
+		Simulation *sim = new Simulation();
+		PropertyValue value;
+		result = sim->flood_prop(1,1,1, value, StructProperty::Integer);
+		assert(result == -1);	
     }
     void testFloodWater()
     {
 		int result;
+		Simulation *sim = new Simulation();
 		result = sim->flood_water(1,1,1,1,1);
 		assert(result == 1);
 		result = sim->flood_water(9999,9999,1,1,1);
@@ -488,7 +488,7 @@ public:
         //see if any errors are thrown. they shouldn't be
 		Simulation *sim = new Simulation();
 		sim->create_part(-1,1,1,PT_LAVA,0);
-		sim->deletePart(1,1);
+		sim->delete_part(1,1);
         //void delete_part(int x, int y);
     }
     void testGetSignPos()
@@ -641,8 +641,13 @@ public:
     {
         Simulation *sim = new Simulation();
 	int x = 1, y = 1, wall = 1, bm = 1;
-
 	CPPUNIT_ASSERT(sim->FloodWalls(x, y, wall, bm));
+
+	x = 999, y = 777, wall = 2, bm = 1;
+	CPPUNIT_ASSERT(sim->FloodWalls(x, y, wall, bm));
+
+	x = -1, y = -1, wall = 1, bm = 1;
+	CPPUNIT_ASSERT(!sim->FloodWalls(x, y, wall, bm));
     } 
     void testCreateParts()
     {

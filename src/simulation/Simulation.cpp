@@ -1787,12 +1787,12 @@ void Simulation::orbitalparts_set(int *block1, int *block2, int resblock1[], int
 	*block2 = block2tmp;
 }
 
-inline int Simulation::is_wire(int x, int y)
+int Simulation::is_wire(int x, int y)
 {
 	return bmap[y][x]==WL_DETECT || bmap[y][x]==WL_EWALL || bmap[y][x]==WL_ALLOWLIQUID || bmap[y][x]==WL_WALLELEC || bmap[y][x]==WL_ALLOWALLELEC || bmap[y][x]==WL_EHOLE;
 }
 
-inline int Simulation::is_wire_off(int x, int y)
+int Simulation::is_wire_off(int x, int y)
 {
 	return (bmap[y][x]==WL_DETECT || bmap[y][x]==WL_EWALL || bmap[y][x]==WL_ALLOWLIQUID || bmap[y][x]==WL_WALLELEC || bmap[y][x]==WL_ALLOWALLELEC || bmap[y][x]==WL_EHOLE) && emap[y][x]<8;
 }

@@ -1,3 +1,4 @@
+#include "../tests/TestRunner.h"
 #ifdef USE_SDL
 
 #include <cppunit/TestAssert.h>
@@ -1015,6 +1016,8 @@ void SigHandler(int signal)
 
 int main(int argc, char * argv[])
 {
+	if (argc > 1 && strcmp(argv[1], "test") == 0)
+		return mainTest();
 	StartAutoTest();
 #if defined(_DEBUG) && defined(_MSC_VER)
 	_CrtSetReportMode(_CRT_ASSERT, _CRTDBG_MODE_DEBUG);
