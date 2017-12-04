@@ -19,7 +19,7 @@ int mainTest()
     SimulationTest * simTest = new SimulationTest();
     OptionsViewTest * optTest = new OptionsViewTest();
 
-    //runner.addTest(simTest->suite());
+    runner.addTest(simTest->suite());
     runner.addTest(optTest->suite());
 
     puts("Starting unit testing suite");
