@@ -21,7 +21,10 @@ private:
     SimulationSample  emptySample;
     Simulation * simulation;
 public:
-	//Tianyue: This function compares 2 void pointers byte by byte
+	/** @brief  This function compares 2 void pointers byte by byte
+	  * @param  Left side of comparison, right side of comparison
+	  * @return Whether both sides are equal in value
+	  */
 	bool equals(void *lhs, void *rhs)
 	{
 		unsigned long sl = sizeof lhs, sr = sizeof rhs;
@@ -130,10 +133,10 @@ public:
         testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testGetGravityField", &SimulationTest::testGetGravityField));
         testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testParticleType", &SimulationTest::testParticleType));
         testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testGetOrbitalParts", &SimulationTest::testGetOrbitalParts));
-        //testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testSetOrbitalParts", &SimulationTest::testSetOrbitalParts)); //SEG_FAULT
-        //testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testGetWavelength", &SimulationTest::testGetWavelength)); //SEG_FAULT
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testSetOrbitalParts", &SimulationTest::testSetOrbitalParts));
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testGetWavelength", &SimulationTest::testGetWavelength));
         testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testGetNormal", &SimulationTest::testGetNormal));
-        //testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testGetNormalInterp", &SimulationTest::testGetNormalInterp)); //SEG_FAULT
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testGetNormalInterp", &SimulationTest::testGetNormalInterp));
         testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testClearSim", &SimulationTest::testClearSim));
         
         return testSuite;
@@ -790,20 +793,18 @@ public:
     void testSetOrbitalParts()
     {
         Simulation *sim = new Simulation();
-	int *block1, *block2, resblock1[1], resblock2[1];
-	*block1 = 1;
-	*block2 = 1;
+	int block1 = 0, block2 = 0;
+	int resblock1[4] = {0,0,0,0}, resblock2[4] = {0,0,0,0};
 
-	sim->orbitalparts_set(block1, block2, resblock1, resblock2);
+	sim->orbitalparts_set(&block1, &block2, resblock1, resblock2);
 	CPPUNIT_ASSERT(sim);
     } 
     void testGetWavelength()
     {
         Simulation *sim = new Simulation();
-	int *wm;
-	*wm = 1;
+	int wm = 600;
 
-	CPPUNIT_ASSERT(sim->get_wavelength_bin(wm));
+	CPPUNIT_ASSERT(sim->get_wavelength_bin(&wm));
     }  
     void testGetNormal()
     {
@@ -817,11 +818,9 @@ public:
     {
         Simulation *sim = new Simulation();
 	int pt = 10;
-	float x0 = 1, y0 = 1, dx = 1, dy = 1, *nx, *ny;
-	*nx = 1;
-	*ny = 1;
+	float x0 = 1, y0 = 1, dx = 1, dy = 1, nx = 1, ny = 1;
 
-	CPPUNIT_ASSERT(sim->get_normal_interp(pt, x0, y0, dx, dy, nx, ny));
+	CPPUNIT_ASSERT(sim->get_normal_interp(pt, x0, y0, dx, dy, &nx, &ny));
     } 
     void testClearSim()
     {
