@@ -56,7 +56,7 @@ public:
         //add the tests
         //testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testLoad", &SimulationTest::testLoad)); //SEG_FAULT
         testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testSave", &SimulationTest::testSave));
-        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testSaveSimOptions", &SimulationTest::testSaveSimOptions)); //Fails Assert Check
+        testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testSaveSimOptions", &SimulationTest::testSaveSimOptions));
         testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testGetSample", &SimulationTest::testGetSample));
         testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testCreateSnapshot", &SimulationTest::testCreateSnapshot));
         testSuite->addTest(new CppUnit::TestCaller <SimulationTest> ("testRestore", &SimulationTest::testRestore));
