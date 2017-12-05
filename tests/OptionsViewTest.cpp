@@ -5,7 +5,7 @@
 #include "cppunit/TestResultCollector.h"
 #include "cppunit/TestRunner.h"
 #include "cppunit/TestAssert.h"
-
+#include <assert.h>
 #include "../src/gui/interface/Window.h"
 #include "../src/gui/options/OptionsView.h"
 
@@ -40,7 +40,7 @@ public:
     {
 	puts("testOptionsView");
 	OptionsView * opt = new OptionsView();
-        CPPUNIT_ASSERT(opt);
+        assert(opt);
     }
 
     void testNotifySettingsChanged()
