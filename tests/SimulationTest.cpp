@@ -370,6 +370,7 @@ public:
     //Alfie
     void testKillPart()
     {
+        std::cout << "Test KillPart\n\n";
         //see if any errors are thrown. they shouldn't be
         Simulation* sim = new Simulation();
         sim->create_part(-1, 1, 1, PT_LAVA, 0);
@@ -377,6 +378,7 @@ public:
     }
     void testFloodFillPmapCheck()
     {
+        std::cout << "Test FloodFillPmapCheck\n\n";
         bool result;
         Simulation* sim = new Simulation();
         result = sim->FloodFillPmapCheck(1, 1, 0);
@@ -391,6 +393,7 @@ public:
     }
     void testFloodProp()
     {
+        std::cout << "Test FloodProp\n\n";
         int result;
         Simulation* sim = new Simulation();
         PropertyValue value;
@@ -399,6 +402,7 @@ public:
     }
     void testFloodWater()
     {
+        std::cout << "Test FloodWater\n\n";
         int result;
         Simulation* sim = new Simulation();
         result = sim->flood_water(1, 1, 1, 1, 1);
@@ -409,6 +413,7 @@ public:
     }
     void testFloodINST()
     {
+        std::cout << "Test FloodINST\n\n";
         int result;
         Simulation* sim = new Simulation();
         result = sim->FloodINST(1, 1, PT_SPRK, PT_INST);
@@ -419,6 +424,7 @@ public:
     }
     void testPartChangeType()
     {
+        std::cout << "Test PartChangeType\n\n";
         //see if any errors are thrown. they shouldn't be
         Simulation* sim = new Simulation();
         sim->create_part(-1, 1, 1, PT_LAVA, 0);
@@ -427,6 +433,7 @@ public:
     }
     void testCreatePart()
     {
+        std::cout << "Test CreatePart\n\n";
         int result;
         Simulation* sim = new Simulation();
         result = sim->create_part(-1, 1, 1, PT_LAVA, 0);
@@ -438,6 +445,7 @@ public:
     }
     void testDeletePart()
     {
+        std::cout << "Test DeletePart\n\n";
         //see if any errors are thrown. they shouldn't be
         Simulation* sim = new Simulation();
         sim->create_part(-1, 1, 1, PT_LAVA, 0);
@@ -446,6 +454,7 @@ public:
     }
     void testIsWire()
     {
+        std::cout << "Test IsWire\n\n";
         int result;
         Simulation* sim = new Simulation();
         sim->create_part(-1, 1, 1, WL_DETECT, 0);
@@ -455,6 +464,7 @@ public:
     }
     void testIsWireOff()
     {
+        std::cout << "Test IsWireOff\n\n";
         int result;
         Simulation* sim = new Simulation();
         sim->create_part(-1, 1, 1, WL_DETECT, 0);
@@ -464,6 +474,7 @@ public:
     }
     void testSetEmap()
     {
+        std::cout << "Test SetEmap\n\n";
         //see if any errors are thrown. they shouldn't be
         Simulation* sim = new Simulation();
         sim->create_part(-1, 1, 1, WL_DETECT, 0);
@@ -472,6 +483,7 @@ public:
     }
     void testUpdateParticles()
     {
+        std::cout << "Test UpdateParticles\n\n";
         //see if any errors are thrown. they shouldn't be
         Simulation* sim = new Simulation();
         sim->UpdateParticles(1, 9999);
@@ -479,6 +491,7 @@ public:
     }
     void testSimulateGol()
     {
+        std::cout << "Test SimulateGol\n\n";
         //see if any errors are thrown. they shouldn't be
         Simulation* sim = new Simulation();
         sim->SimulateGoL();
@@ -486,6 +499,7 @@ public:
     }
     void testRecalcFreeParticles()
     {
+        std::cout << "Test RecalcFreeParticles\n\n";
         //see if any errors are thrown. they shouldn't be
         Simulation* sim = new Simulation();
         sim->RecalcFreeParticles(true);
@@ -494,6 +508,7 @@ public:
     }
     void testCheckStacking()
     {
+        std::cout << "Test CheckStacking\n\n";
         Simulation* sim = new Simulation();
         sim->CheckStacking();
         CPPUNIT_ASSERT(sim);
@@ -501,6 +516,7 @@ public:
     }
     void testBeforeSim()
     {
+        std::cout << "Test BeforeSim\n\n";
         Simulation* sim = new Simulation();
         sim->BeforeSim();
         CPPUNIT_ASSERT(sim);
@@ -508,6 +524,7 @@ public:
     }
     void testAfterSim()
     {
+        std::cout << "Test AfterSim\n\n";
         Simulation* sim = new Simulation();
         sim->AfterSim();
         CPPUNIT_ASSERT(sim);
@@ -515,12 +532,14 @@ public:
     }
     void testRotateArea()
     {
+        std::cout << "Test RotateArea\n\n";
         Simulation* sim = new Simulation();
         //I don't think this is defined anywhere
         //void rotate_area(int area_x, int area_y, int area_w, int area_h, int invert);
     }
     void testClearArea()
     {
+        std::cout << "Test ClearArea\n\n";
         Simulation* sim = new Simulation();
         sim->clear_area(1, 1, 50, 50);
         CPPUNIT_ASSERT(sim);
@@ -528,6 +547,7 @@ public:
     }
     void testEdgeMode()
     {
+        std::cout << "Test EdgeMode\n\n";
         Simulation* sim = new Simulation();
         sim->SetEdgeMode(0);
         CPPUNIT_ASSERT(sim);
@@ -537,6 +557,7 @@ public:
     }
     void testApplyDecoration()
     {
+        std::cout << "Test ApplyDecoration\n\n";
         Simulation* sim = new Simulation();
         sim->ApplyDecoration(0, 0, 0, 0, 0, 0, 0);
         CPPUNIT_ASSERT(sim);
@@ -544,6 +565,7 @@ public:
     }
     void testApplyDecorationPoint()
     {
+        std::cout << "Test ApplyDecorationPoint\n\n";
         Simulation* sim = new Simulation();
         sim->ApplyDecorationPoint(0, 0, 0, 0, 0, 0, 0, NULL);
         CPPUNIT_ASSERT(sim);
@@ -551,6 +573,7 @@ public:
     }
     void testApplyDecorationLine()
     {
+        std::cout << "Test ApplyDecorationLine\n\n";
         Simulation* sim = new Simulation();
         sim->ApplyDecorationLine(0, 0, 1, 1, 0, 0, 0, 0, 0, NULL);
         CPPUNIT_ASSERT(sim);
@@ -558,6 +581,7 @@ public:
     }
     void testApplyDecorationBox()
     {
+        std::cout << "Test ApplyDecorationBox\n\n";
         Simulation* sim = new Simulation();
         sim->ApplyDecorationBox(0, 0, 1, 1, 0, 0, 0, 0, 0);
         CPPUNIT_ASSERT(sim);
@@ -565,6 +589,7 @@ public:
     }
     void testColorCompare()
     {
+        std::cout << "Test ColorCompare\n\n";
         Simulation* sim = new Simulation();
         ui::Engine::Ref().g = new Graphics();
         Renderer* ren = new Renderer(ui::Engine::Ref().g, sim);
@@ -580,6 +605,7 @@ public:
     }
     void testApplyDecorationFill()
     {
+        std::cout << "Test ApplyDecorationFill\n\n";
         Simulation* sim = new Simulation();
         ui::Engine::Ref().g = new Graphics();
         Renderer* ren = new Renderer(ui::Engine::Ref().g, sim);
@@ -589,6 +615,7 @@ public:
     }
     void testTool()
     {
+        std::cout << "Test Tool\n\n";
         Simulation* sim = new Simulation();
         int result;
         result = sim->Tool(0, 0, 0, 0.0);
@@ -597,6 +624,7 @@ public:
     }
     void testToolBrush()
     {
+        std::cout << "Test ToolBrush\n\n";
         Simulation* sim = new Simulation();
         int result;
         result = sim->ToolBrush(0, 0, 0, NULL, 0.0);
@@ -605,6 +633,7 @@ public:
     }
     void testToolLine()
     {
+        std::cout << "Test ToolLine\n\n";
         Simulation* sim = new Simulation();
         ui::Point p(1, 1);
         Brush* cBrush = new Brush(p);
@@ -614,6 +643,7 @@ public:
     }
     void testToolBox()
     {
+        std::cout << "Test ToolBox\n\n";
         Simulation* sim = new Simulation();
         sim->ToolBox(0, 0, 1, 1, 0, 0.0);
         CPPUNIT_ASSERT(sim);
@@ -621,6 +651,7 @@ public:
     }
     void testCreateWalls()
     {
+        std::cout << "Test CreateWalls\n\n";
         Simulation* sim = new Simulation();
         ui::Point p(1, 1);
         Brush* cBrush = new Brush(p);
@@ -630,6 +661,7 @@ public:
     }
     void testCreateWallLine()
     {
+        std::cout << "Test CreateWallLine\n\n";
         Simulation* sim = new Simulation();
         ui::Point p(1, 1);
         Brush* cBrush = new Brush(p);
@@ -639,6 +671,7 @@ public:
     }
     void testCreateWallBox()
     {
+        std::cout << "Test CreateWallBox\n\n";
         Simulation* sim = new Simulation();
         sim->CreateWallBox(0, 0, 1, 1, 0);
         CPPUNIT_ASSERT(sim);
@@ -679,6 +712,7 @@ public:
 
     void testCreateLine()
     {
+        std::cout << "Test CreateLine\n\n";
         Simulation* sim = new Simulation();
         int x1 = 1, y1 = 1, x2 = 2, y2 = 2, c = 1;
         ui::Point p(1, 1);
@@ -692,6 +726,7 @@ public:
     }
     void testCreateBox()
     {
+        std::cout << "Test CreateBox\n\n";
         Simulation* sim = new Simulation();
         int x1 = 1, y1 = 1, x2 = 2, y2 = 2, c = 1;
 
@@ -700,6 +735,7 @@ public:
     }
     void testFloodParts()
     {
+        std::cout << "Test FloodParts\n\n";
         Simulation* sim = new Simulation();
         int x = 1, y = 1, c = 1, cm = 1;
 
@@ -707,6 +743,7 @@ public:
     }
     void testGetGravityField()
     {
+        std::cout << "Test GetGravityField\n\n";
         Simulation* sim = new Simulation();
         int x = 1, y = 1;
         float particleGrav = 1, newtonGrav = 1, pGravX = 1, pGravY = 1;
@@ -716,12 +753,14 @@ public:
     }
     void testParticleType()
     {
+        std::cout << "Test ParticleType\n\n";
         Simulation* sim = new Simulation();
 
         CPPUNIT_ASSERT(sim->GetParticleType("TSNS"));
     }
     void testGetOrbitalParts()
     {
+        std::cout << "Test GetOrbitalParts\n\n";
         Simulation* sim = new Simulation();
         int block1 = 1, block2 = 1, resblock1[1], resblock2[1];
 
@@ -730,6 +769,7 @@ public:
     }
     void testSetOrbitalParts()
     {
+        std::cout << "Test SetOrbitalParts\n\n";
         Simulation* sim = new Simulation();
         int block1 = 0, block2 = 0;
         int resblock1[4] = { 0, 0, 0, 0 }, resblock2[4] = { 0, 0, 0, 0 };
@@ -739,6 +779,7 @@ public:
     }
     void testGetWavelength()
     {
+        std::cout << "Test GetWaveLength\n\n";
         Simulation* sim = new Simulation();
         int wm = 600;
 
@@ -746,6 +787,7 @@ public:
     }
     void testGetNormal()
     {
+        std::cout << "Test GetNormal\n\n";
         Simulation* sim = new Simulation();
         int pt = 10, x = 1, y = 1, dx = 1, dy = 1;
         float *nx, *ny;
@@ -754,6 +796,7 @@ public:
     }
     void testGetNormalInterp()
     {
+        std::cout << "Test GetNormalInterp\n\n";
         Simulation* sim = new Simulation();
         int pt = 10;
         float x0 = 1, y0 = 1, dx = 1, dy = 1, nx = 1, ny = 1;
@@ -762,6 +805,7 @@ public:
     }
     void testClearSim()
     {
+        std::cout << "Test ClearSim\n\n";
         Simulation* sim = new Simulation();
         sim->clear_sim();
 

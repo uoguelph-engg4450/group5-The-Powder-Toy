@@ -39,14 +39,14 @@ public:
 
     void testOptionsView()
     {
-        puts("testOptionsView");
+        std::cout << "Test OptionsView\n\n";
         OptionsView* opt = new OptionsView();
         assert(opt);
     }
 
     void testNotifySettingsChanged()
     {
-        puts("testNotifySettingsChanged");
+        std::cout << "Test NotifySettingsChanged\n\n";
         OptionsView* opt = new OptionsView();
         GameModel* mod = new GameModel();
         OptionsModel* sender = new OptionsModel(mod);
@@ -57,7 +57,7 @@ public:
 
     void testAttachController()
     {
-        puts("testAttachController");
+        std::cout << "Test AttachController\n\n";
         OptionsView* opt = new OptionsView();
         GameModel* mod = new GameModel();
         ControllerCallback* call = new ControllerCallback();
@@ -69,7 +69,7 @@ public:
 
     void testOnDraw()
     {
-        puts("testOnDraw");
+        std::cout << "Test OnDraw\n\n";
         OptionsView* opt = new OptionsView();
 
         opt->OnDraw();
@@ -78,7 +78,7 @@ public:
 
     void testOnTryExit()
     {
-        puts("testOnTryExit");
+        std::cout << "Test OnTryExit\n\n";
         OptionsView* opt = new OptionsView();
         GameModel* mod = new GameModel();
         ControllerCallback* call = new ControllerCallback();
