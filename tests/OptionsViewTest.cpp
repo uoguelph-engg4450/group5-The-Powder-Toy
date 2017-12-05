@@ -6,8 +6,12 @@
 #include "cppunit/TestRunner.h"
 #include "cppunit/TestAssert.h"
 #include <assert.h>
+
+#include "../src/gui/game/GameModel.h"
 #include "../src/gui/interface/Window.h"
 #include "../src/gui/options/OptionsView.h"
+#include "../src/gui/options/OptionsController.h"
+#include "../src/Controller.h"
 
 class OptionsViewTest : public CppUnit::TestSuite
 {
@@ -47,9 +51,10 @@ public:
     {
 	puts("testNotifySettingsChanged");
 	OptionsView * opt = new OptionsView();
-        //OptionsModel * sender = new OptionsModel(NULL);
+	GameModel * mod = new GameModel();
+        OptionsModel * sender = new OptionsModel(mod);
 
-        //opt->NotifySettingsChanged(sender);
+        opt->NotifySettingsChanged(sender);
         CPPUNIT_ASSERT(opt);
     }
 
@@ -57,9 +62,11 @@ public:
     {
 	puts("testAttachController");
 	OptionsView * opt = new OptionsView();
-        //OptionsController * cont = new OptionsController(NULL, NULL);
+	GameModel * mod = new GameModel();
+	ControllerCallback * call = new ControllerCallback();
+	OptionsController * cont = new OptionsController(mod, call);
 
-        //opt->AttachController(cont);
+        opt->AttachController(cont);
         CPPUNIT_ASSERT(opt);
     }
 
@@ -68,7 +75,7 @@ public:
 	puts("testOnDraw");
 	OptionsView * opt = new OptionsView();
 
-        //opt->OnDraw();
+        opt->OnDraw();
         CPPUNIT_ASSERT(opt);
     }
 
@@ -76,8 +83,12 @@ public:
     {
 	puts("testOnTryExit");
 	OptionsView * opt = new OptionsView();
+	GameModel * mod = new GameModel();
+	ControllerCallback * call = new ControllerCallback();
+	OptionsController * cont = new OptionsController(mod, call);
 
-        //opt->OnTryExit(ui::Window::ExitButton);
+        opt->AttachController(cont);
+        opt->OnTryExit(ui::Window::ExitButton);
         CPPUNIT_ASSERT(opt);
     }
 
