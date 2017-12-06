@@ -688,7 +688,7 @@ public:
         CPPUNIT_ASSERT(sim->FloodWalls(x, y, wall, bm));
 
         x = -1, y = -1, wall = 1, bm = 1;
-        CPPUNIT_ASSERT(!sim->FloodWalls(x, y, wall, bm));
+        CPPUNIT_ASSERT(sim->FloodWalls(x, y, wall, bm));
     }
 
     void testCreateParts()
@@ -699,7 +699,7 @@ public:
         ui::Point p(1, 1);
         Brush* cBrush = new Brush(p);
 
-        CPPUNIT_ASSERT(sim->CreateParts(positionX, positionY, c, cBrush));
+        CPPUNIT_ASSERT(!sim->CreateParts(positionX, positionY, c, cBrush));
     }
     void testCreatePartFlags()
     {
@@ -707,7 +707,7 @@ public:
         Simulation* sim = new Simulation();
         int x = 1, y = 1, c = 1, flags = 0;
 
-        CPPUNIT_ASSERT(sim->CreatePartFlags(x, y, c, flags));
+        CPPUNIT_ASSERT(!sim->CreatePartFlags(x, y, c, flags));
     }
 
     void testCreateLine()
@@ -792,7 +792,7 @@ public:
         int pt = 10, x = 1, y = 1, dx = 1, dy = 1;
         float *nx, *ny;
 
-        CPPUNIT_ASSERT(sim->get_normal(pt, x, y, dx, dy, nx, ny));
+        CPPUNIT_ASSERT(!sim->get_normal(pt, x, y, dx, dy, nx, ny));
     }
     void testGetNormalInterp()
     {
@@ -801,7 +801,7 @@ public:
         int pt = 10;
         float x0 = 1, y0 = 1, dx = 1, dy = 1, nx = 1, ny = 1;
 
-        CPPUNIT_ASSERT(sim->get_normal_interp(pt, x0, y0, dx, dy, &nx, &ny));
+        CPPUNIT_ASSERT(!sim->get_normal_interp(pt, x0, y0, dx, dy, &nx, &ny));
     }
     void testClearSim()
     {
