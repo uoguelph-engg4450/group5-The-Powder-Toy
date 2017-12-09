@@ -58,7 +58,7 @@ extern "C" {
 #include "gui/Style.h"
 
 #include "client/HTTP.h"
-
+#include "../tests/TestRunner.h"
 using namespace std;
 
 #define INCLUDE_SYSWM
@@ -78,43 +78,40 @@ bool fullscreen = false;
 
 void StartAutoTest()
 {
-	int iterationCount;
 	try
 	{
-		for (iterationCount = 1; iterationCount < 21; iterationCount++)
-		{
-			Simulation *sim = new Simulation();
-			CPPUNIT_ASSERT_MESSAGE("Error: Failed to initialize simulation", sim);
+		Simulation *sim = new Simulation();
+		CPPUNIT_ASSERT_MESSAGE("Error: Failed to initialize simulation", sim);
 
-			sim->includePressure = false;
-			GameSave *savNP = sim->Save();//No pressure
+		sim->includePressure = false;
+		GameSave *savNP = sim->Save();//No pressure
 
-			sim->includePressure = true;
-			GameSave *savWP = sim->Save();//With pressure
+		sim->includePressure = true;
+		GameSave *savWP = sim->Save();//With pressure
 
-			CPPUNIT_ASSERT_MESSAGE("Error: Failed to initialize save game", savNP && savWP);
-			CPPUNIT_ASSERT_MESSAGE("Error: Pressure flag has no effect", savNP != savWP);
+		CPPUNIT_ASSERT_MESSAGE("Error: Failed to initialize save game", savNP && savWP);
+		CPPUNIT_ASSERT_MESSAGE("Error: Pressure flag has no effect", savNP != savWP);
 
-			sim->includePressure = false;
-			CPPUNIT_ASSERT_MESSAGE("Error: Load without pressure failed", !sim->Load(savNP));
+		sim->includePressure = false;
+		CPPUNIT_ASSERT_MESSAGE("Error: Load without pressure failed", !sim->Load(savNP));
 
-			sim->includePressure = true;
-			CPPUNIT_ASSERT_MESSAGE("Error: Load with pressure failed", !sim->Load(savWP));
+		sim->includePressure = true;
+		CPPUNIT_ASSERT_MESSAGE("Error: Load with pressure failed", !sim->Load(savWP));
 
-			printf("Test #%02d Passed\n", iterationCount);
+		puts("Initial Save/Load integrity check passed");
+		CPPUNIT_ASSERT(simOnlyTest() == 0);
 
-			delete sim;
-			delete savNP;
-			delete savWP;
-		}
+		delete sim;
+		delete savNP;
+		delete savWP;
 	}
 	catch(...)
 	{
-		printf("Test #%02d Failed, exiting\n", iterationCount);
+		puts("Test Failed, exiting");
 		exit(0);
 	}
 
-	puts("\nAutomated testing passed, starting game");
+	puts("\nAutomated testing passed, starting game\n\n");
 }
 
 void ClipboardPush(std::string text)
@@ -1016,9 +1013,16 @@ void SigHandler(int signal)
 
 int main(int argc, char * argv[])
 {
+#ifdef DEBUG
+	puts("-----------Debug Build-----------");
 	if (argc > 1 && strcmp(argv[1], "test") == 0)
 		return mainTest();
-	StartAutoTest();
+	else
+		StartAutoTest();
+#else
+	puts("----------Release Build----------");
+#endif
+
 #if defined(_DEBUG) && defined(_MSC_VER)
 	_CrtSetReportMode(_CRT_ASSERT, _CRTDBG_MODE_DEBUG);
 #endif

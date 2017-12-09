@@ -49,3 +49,34 @@ int mainTest()
     puts("\n\nTest completed, exiting...");
     return 0;
 }
+
+int simOnlyTest()
+{
+    CppUnit::TestResult controller;
+    CppUnit::TestResultCollector result;
+    controller.addListener(&result);
+    std::cout.setstate(std::ios_base::failbit);
+
+    CppUnit::TestRunner runner;
+    SimulationTest * simTest = new SimulationTest();
+    runner.addTest(simTest->suite());
+
+    puts("Starting simulation class integrity check...");
+    try
+    {
+    	runner.run(controller);
+    	CppUnit::CompilerOutputter outputter(&result,std::cout);
+        outputter.write();
+        std::cout.clear();
+    }
+    catch(...)
+    {
+        std::cerr << "\n\nTest failed\n\n";
+	return -1;
+    }
+
+    puts("Simulations class testing completed");
+    return 0;
+}
+
+
