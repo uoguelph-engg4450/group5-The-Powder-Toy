@@ -11,15 +11,15 @@ Build instructions
 
 Release build:
 
-sudo apt-get install libcppunit-dev build-essential libsdl1.2-dev libbz2-dev zlib1g-dev liblua5.1.0-dev git scons libfftw3-dev
-scons -c && scons -j10
-build/powder64
+    sudo apt-get install libcppunit-dev build-essential libsdl1.2-dev libbz2-dev zlib1g-dev liblua5.1.0-dev git scons libfftw3-dev
+    scons -c && scons -j10
+    build/powder64
 
 Debug build:
 
-scons -c && scons --debugging -j10
-build/powder64       #automated testing before startup
-build/powder64 test  #full unit testing and exit
+    scons -c && scons --debugging -j10
+    build/powder64       #automated testing before startup
+    build/powder64 test  #full unit testing and exit
 
 ===========================================================================
 
