@@ -1,25 +1,17 @@
-The Powder Toy - November 2017
+The Powder Toy - ENGG4450 Group 5 Branch
 ==========================
 
-Get the latest version here: http://powdertoy.co.uk/Download.html
+Fixed issue #524: Setting disable pressure being included in saves.
 
-To use online features such as saving, you need to register at: http://powdertoy.co.uk/Register.html
-You can visit the official TPT forum here: http://powdertoy.co.uk/Discussions/Categories/Index.html
+Added automated and unit testing.
 
-
-Have you ever wanted to blow something up? Or maybe you always dreamt of operating an atomic power plant? Do you have a will to develop your own CPU? The Powder Toy lets you to do all of these, and even more!
-
-The Powder Toy is a free physics sandbox game, which simulates air pressure and velocity, heat, gravity and a countless number of interactions between different substances! The game provides you with various building materials, liquids, gases and electronic components which can be used to construct complex machines, guns, bombs, realistic terrains and almost anything else. You can then mine them and watch cool explosions, add intricate wirings, play with little stickmen or operate your machine. You can browse and play thousands of different saves made by the community or upload your own - we welcome your creations!
-
-There is a Lua API - you can automate your work or even make plugins for the game. The Powder Toy is free and the source code is distributed under the GNU General Public License, so you can modify the game yourself or help with development. TPT is compiled using scons.
 
 Build instructions
 ===========================================================================
 
-    sudo apt-get install build-essential libsdl1.2-dev libbz2-dev zlib1g-dev liblua5.1.0-dev git scons libfftw3-dev
-    scons
+    sudo apt-get install build-essential libsdl1.2-dev libbz2-dev zlib1g-dev liblua5.1.0-dev git scons libfftw3-dev libcppunit-dev
 
-For a list of flags for `scons`, see http://powdertoy.co.uk/Wiki/W/Scons_command_line_flags.html.
+    scons -c && scons -j10
 
 Thanks
 ===========================================================================
